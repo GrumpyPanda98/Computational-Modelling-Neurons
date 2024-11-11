@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['test.py', 'main.py', 'functions/waveforms.py']
+recent_files = ['functions/waveforms.py', 'main.py', 't3_prototyping.py', 'waveform_test.py']
 
 [main]
 version = 0.2.0
