@@ -145,11 +145,11 @@ sns.set(font_scale=1.5, style='whitegrid', palette='colorblind')
 
 plt.figure()
 plt.plot(
-    np.array(stimulation.time)[:10000], list(fiber.vm[end_node])[:10000], label='end node', color='royalblue', linewidth=2
+    np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], label='end node', color='royalblue', linewidth=2
 )
 plt.plot(
-    np.array(stimulation.time)[:10000],
-    list(fiber.vm[center_node])[:10000],
+    np.array(stimulation.time)[:],
+    list(fiber.vm[center_node])[:],
     label='center node',
     color='mediumturquoise',
     linewidth=2,
@@ -158,7 +158,7 @@ plt.legend()
 plt.xlabel('Time (ms)')
 plt.ylabel('$V_m$ $(mV)$')
 ax2 = plt.gca().twinx()
-ax2.plot(np.array(stimulation.time)[:10000], stimamp * waveform[:10000], 'k--', label='Stimulus')
+ax2.plot(np.array(stimulation.time)[:-1], stimamp * waveform[:], 'k--', label='Stimulus')
 ax2.legend(loc=4)
 ax2.grid(False)
 plt.ylabel('Stimulation amplitude (mA)')
@@ -183,7 +183,7 @@ g = sns.heatmap(
 plt.xlim([0, 100000])
 plt.ylabel('Node index')
 plt.xlabel('Time (ms)')
-tick_locs = np.linspace(0, len(np.array(stimulation.time)[:100000]), 9)
+tick_locs = np.linspace(0, len(np.array(stimulation.time)[:-1]), 9)
 labels = [round(np.array(stimulation.time)[int(ind)], 2) for ind in tick_locs]
 g.set_xticks(ticks=tick_locs, labels=labels)
 plt.title(
@@ -198,12 +198,12 @@ plt.show()
 # plot gating variables
 plt.figure()
 for var in fiber.gating:
-    plt.plot(np.array(stimulation.time)[:100000], list(fiber.gating[var][6])[:100000], label=var)
+    plt.plot(np.array(stimulation.time)[:], list(fiber.gating[var][6])[:], label=var)
 plt.legend()
 plt.xlabel('Time (ms)')
 plt.ylabel('Gating probability')
 ax2 = plt.gca().twinx()
-ax2.plot(np.array(stimulation.time)[:100000], amp * waveform[:100000], 'k--', label='Stimulus')
+ax2.plot(np.array(stimulation.time)[:-1], amp * waveform[:], 'k--', label='Stimulus')
 ax2.legend(loc=4)
 ax2.grid(False)
 plt.ylabel('Stimulation amplitude (mA)')
@@ -215,21 +215,21 @@ plt.figure()
 fig, axs = plt.subplots(3, 1, figsize=(5, 5), sharex=True, gridspec_kw={'hspace': 0.3})
 plt.sca(axs[0])
 # plot stimulus
-plt.plot(np.array(stimulation.time)[:100000], amp * waveform[:100000], 'k--', label='Stimulus')
+plt.plot(np.array(stimulation.time)[:-1], amp * waveform[:], 'k--', label='Stimulus')
 plt.title('Stimulus')
 plt.sca(axs[1])
 # plot membrane voltage
 plt.plot(
-    np.array(stimulation.time)[:100000],
-    list(fiber.vm[center_node])[:100000],
+    np.array(stimulation.time)[:],
+    list(fiber.vm[center_node])[:],
     color='mediumturquoise',
     linewidth=2,
     label='$V_m$',
 )
 # plot im
 plt.plot(
-    np.array(stimulation.time)[:100000],
-    list(fiber.im[center_node])[:100000],
+    np.array(stimulation.time)[:],
+    list(fiber.im[center_node])[:],
     color='mediumturquoise',
     linewidth=2,
     label='$I_m$',
@@ -240,11 +240,11 @@ plt.legend()
 plt.sca(axs[2])
 # plot end node
 plt.plot(
-    np.array(stimulation.time)[:100000], list(fiber.vm[end_node])[:100000], color='royalblue', linewidth=2, label='$V_m$'
+    np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], color='royalblue', linewidth=2, label='$V_m$'
 )
 plt.plot(
-    np.array(stimulation.time)[:100000],
-    list(fiber.im[end_node])[:100000],
+    np.array(stimulation.time)[:],
+    list(fiber.im[end_node])[:],
     color='royalblue',
     linewidth=2,
     label='$I_m$',
@@ -264,8 +264,8 @@ from moviepy.editor import VideoClip
 from moviepy.video.io.bindings import mplfig_to_npimage
 
 fps = 30
-skip = 10  # do every 10th timestep
-stop = 2 / time_step  # stop after 2 milliseconds
+skip = 100  # do every 10th timestep
+stop = 1000 / time_step  # stop after 2 milliseconds
 
 duration = stop / fps / skip  # milliseconds
 ylim = (np.amin(list(fiber.vm[1:-1]))), np.amax(list(fiber.vm[1:-1]))
