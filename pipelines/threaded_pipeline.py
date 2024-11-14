@@ -5,7 +5,7 @@ Created on Wed Nov 13 20:35:02 2024
 
 @author: gz57nm
 """
-
+import time
 import concurrent.futures
 import os
 import json
@@ -253,8 +253,11 @@ def run_simulation_parallel(waveforms, time_step, time_stop, stim_amp):
 
 #%% Execute the Simulation
 if __name__ == "__main__":
+    tic=time.time()
     waveforms = generate_waveforms(time_step, time_stop)
     activation_thresholds = run_simulation_parallel(waveforms, time_step, time_stop, stim_amp)
+    toc=time.time()
+    print(f"Time elapsed {toc-tic} s")
     
     
     

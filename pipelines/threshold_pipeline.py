@@ -5,7 +5,7 @@ Simulation of nerve fibers using pyfibers.
 
 @author: gz57nm
 """
-
+import time
 from pyfibers import build_fiber, FiberModel, ScaledStim
 import numpy as np
 import matplotlib.pyplot as plt
@@ -243,8 +243,11 @@ def run_simulation(waveforms, time_step=0.0001, time_stop=100, stim_amp=-1.5):
 
 #%% Execute the Simulation
 if __name__ == "__main__":
+    tic=time.time()
     waveforms = generate_waveforms(time_step, time_stop)
     activation_thresholds = run_simulation(waveforms, time_step, time_stop, stim_amp)
+    toc=time.time()
+    print(f"Time elapsed {toc-tic} s")
     
     
     
