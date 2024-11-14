@@ -40,7 +40,7 @@ fiber = build_fiber(
 #%% Waveform
 
 time_step=0.001
-time_stop=1000
+time_stop=100
 
 # Create cSCS with passive charge balance waveform
 t_cp, waveform= conventional_passive(
@@ -82,11 +82,11 @@ fiber.potentials = fiber.point_source_potentials(0, 250, fiber.length / 2, 1, 10
 # current of point source is 1 microAmps
 # Conductivity is 10 Siemens/m
 
-plt.plot(fiber.longitudinal_coordinates, fiber.potentials)
-plt.xlabel('Distance along fiber (μm)')
-plt.ylabel('Electrical potential (mV)')
-plt.title('Extracellular potentials')
-plt.show()
+# plt.plot(fiber.longitudinal_coordinates, fiber.potentials)
+# plt.xlabel('Distance along fiber (μm)')
+# plt.ylabel('Electrical potential (mV)')
+# plt.title('Extracellular potentials')
+# plt.show()
 
 #%% Running simulation
 
@@ -180,7 +180,6 @@ g = sns.heatmap(
     vmax=np.amax(data.values) + vrest,
     vmin=-np.amax(data.values) + vrest,
 )
-plt.xlim([0, 100000])
 plt.ylabel('Node index')
 plt.xlabel('Time (ms)')
 tick_locs = np.linspace(0, len(np.array(stimulation.time)[:-1]), 9)
@@ -195,10 +194,9 @@ plt.show()
 
 #%% Plot Gating variables
 
-# plot gating variables
 plt.figure()
 for var in fiber.gating:
-    plt.plot(np.array(stimulation.time)[:], list(fiber.gating[var][6])[:], label=var)
+    plt.plot(np.array(stimulation.time)[:], list(fiber.gating[var][center_node])[:], label=var)
 plt.legend()
 plt.xlabel('Time (ms)')
 plt.ylabel('Gating probability')

@@ -176,28 +176,31 @@ plt.show()
 
 
 #%% Create a BurstDR waveform
-t_bp, burstpas_wave = burst_passive(
-    burst_frequency=500,         # Frequency of the burst
-    carrier_frequency=45,        # Frequency of the carrier
-    burst_duration=9,    # Duration of each burst
-    time_stop=25000,            # Total duration of the waveform
-    time_step= 0.0001,
-    burst_tau= -0.008,
-    discharge_tau = 0.005
-)
+# t_bp, burstpas_wave = burst_passive(
+#     burst_frequency=500,         # Frequency of the burst
+#     carrier_frequency=45,        # Frequency of the carrier
+#     burst_duration=9,    # Duration of each burst
+#     time_stop=100,            # Total duration of the waveform
+#     time_step= 0.0001,
+#     burst_tau= -0.008,
+#     discharge_tau = 0.005
+# )
 
 
-# Plot 6: Burst Passive Charge Balance
-fig6, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
-ax1.plot(t_bp, burstpas_wave)
-ax1.set_title('Burst Passive Charge Balance (Full)')
-ax1.grid(True)
+# # Plot 6: Burst Passive Charge Balance
+# fig6, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+# ax1.plot(t_bp, burstpas_wave)
+# ax1.set_title('Burst Passive Charge Balance (Full)')
+# ax1.grid(True)
 
-ax2.plot(t_bp, burstpas_wave)
-ax2.set_title('Burst Passive Charge Balance (Zoomed)')
-ax2.set_xlim(18, 40)
-ax2.grid(True)
+# ax2.plot(t_bp, burstpas_wave)
+# ax2.set_title('Burst Passive Charge Balance (Zoomed)')
+# ax2.set_xlim(18, 40)
+# ax2.grid(True)
 
-fig6.suptitle('Burst Passive Charge Balance')
-plt.tight_layout()
-plt.show()
+# fig6.suptitle('Burst Passive Charge Balance')
+# plt.tight_layout()
+# plt.show()
+
+
+#%% 

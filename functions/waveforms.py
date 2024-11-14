@@ -9,7 +9,7 @@ Created on Wed Oct  9 10:03:46 2024
 import numpy as np
 import matplotlib.pyplot as plt
 
-def conventional(frequency, pulse_width, interphase_interval, time_stop, time_step, pos_percent=0.1):
+def conventional(frequency, pulse_width, interphase_interval, time_stop, time_step, pos_percent=1):
     period = 1000/ frequency  # ms
     pulse_points = int(pulse_width / time_step)  # number of points for the pulse width
     half_pulse_points = pulse_points // 2  # half of the pulse width
@@ -35,7 +35,7 @@ def conventional(frequency, pulse_width, interphase_interval, time_stop, time_st
 
     return t, waveform
 
-def conventional_passive(frequency, pulse_width, interphase_interval, time_stop, time_step, tau, discharge_time_factor=2,pos_percent=0.1):
+def conventional_passive(frequency, pulse_width, interphase_interval, time_stop, time_step, tau, discharge_time_factor=2,pos_percent=1):
     period = 1000 / frequency  # ms
     gap_points = int(interphase_interval / time_step)  # gap points
     points_per_period = int(period / time_step)  # points in one cycle
@@ -185,29 +185,4 @@ def burst_abott(frequency, burst_frequency, pulse_width, interphase_interval, ti
 
 
 
-t_ab, burstab_wave = burst_abott(
-    frequency=40,          # Carrier frequency of the waveform
-    burst_frequency=500,   # Frequency of the bursts
-    pulse_width=0.15,      # Width of each pulse
-    interphase_interval=0.2, # Interval between pulses
-    time_stop=100,         # Total time for the waveform'
-    time_step= 0.0001,
-    tau=0.5,              # Time constant for decay
-    discharge_length=10
-)
 
-# Plot Burst Abott
-fig5, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
-ax1.plot(t_ab, burstab_wave)
-ax1.set_title('Burst "Biphasic Waveform" (Full)')
-ax1.set_xlim(0, 100)
-ax1.grid(True)
-
-ax2.plot(t_ab, burstab_wave)
-ax2.set_title('Burst "Biphasic Waveform" (Zoomed)')
-ax2.set_xlim(11, 14)
-ax2.grid(True)
-
-fig5.suptitle('Burst "Biphasic Waveform"')
-plt.tight_layout()
-plt.show()
