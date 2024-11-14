@@ -22,7 +22,7 @@ time_step = 0.001
 time_stop = 100
 
 #%% Define the function to create a fiber model
-def create_fiber(fiber_model=FiberModel.MRG_DISCRETE, length=5000, diameter=10, temperature=37):
+def create_fiber(fiber_model=FiberModel.MRG_DISCRETE, length=500, diameter=10, temperature=37):
     return build_fiber(fiber_model=fiber_model, length=length, diameter=diameter, temperature=temperature)
 
 #%% Generate and Plot All Waveforms
@@ -228,12 +228,12 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
 
     return title, amp
 
-#%% Function to run all simulations in parallel
+#%% Function to run all simulations in parallel using all CPU cores
 def run_simulation_parallel(waveforms, time_step, time_stop, stim_amp):
     activation_thresholds = {}
 
-    # Use ThreadPoolExecutor for parallel execution
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    # Use ProcessPoolExecutor for CPU-bound tasks
+    with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
         # Submit all simulations to the executor
         futures = [
             executor.submit(run_single_simulation, title, t, waveform, time_step, time_stop, stim_amp)
