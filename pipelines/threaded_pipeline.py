@@ -6,6 +6,7 @@ Created on Wed Nov 13 20:35:02 2024
 @author: gz57nm
 """
 import time
+from datetime import datetime
 import concurrent.futures
 import os
 import json
@@ -19,10 +20,33 @@ from functions.waveforms import conventional, conventional_passive
 #%% Definitions
 stim_amp = -1.5
 time_step = 0.001
-time_stop = 100
+time_stop = 200
+length = 1e5 
+diameter = 10
+temperature = 37
+fiber_model = FiberModel.MRG_DISCRETE
+exit_t_shift = time_stop
+thresh_num_aps = 10
+
+simulation_parameters = {
+    "stim_amp": stim_amp,
+    "time_step": time_step,
+    "time_stop": time_stop,
+    "length": length,
+    "diameter": diameter,
+    "temperature": temperature,
+    "thresh_num_aps": thresh_num_aps,
+    "exit_t_shift": exit_t_shift,
+    "fiber_model": f'{fiber_model}'
+}
+
+# Create a timestamped folder
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+folder_name = f"simulation_results_{timestamp}"
+
 
 #%% Define the function to create a fiber model
-def create_fiber(fiber_model=FiberModel.MRG_DISCRETE, length=500, diameter=10, temperature=37):
+def create_fiber(fiber_model=fiber_model, length=length, diameter=diameter, temperature=temperature):
     return build_fiber(fiber_model=fiber_model, length=length, diameter=diameter, temperature=temperature)
 
 #%% Generate and Plot All Waveforms
@@ -110,19 +134,30 @@ def generate_waveforms(time_step, time_stop):
         axes[i, 1].set_xlim(*config["zoom_range"])
         axes[i, 1].grid(True)
 
-    # Show the plots
+    plt.savefig(os.path.join(folder_name, "waveform_plots.png"))
     plt.show()
 
-    return waveforms
+    for config in waveform_configs:
+        config["generator"] = config["generator"].__name__  # Convert function to its name
+    
+
+    return waveforms, config
+
 
 #%% Function to run a single simulation
-def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
+def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop, stim_amp, exit_t_shift, thresh_num_aps):
     print(f"Running simulation for: {title}")
 
     # Create folder for this waveform
-    folder_name = title.replace(" ", "_")
+    folder_name = os.path.join(main_folder, title.replace(" ", "_"))
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
+        
+    # Paths for saving plots
+    plot_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_voltage_stimulation.png")
+    heatmap_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_voltage_heatmap.png")
+    gating_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_gating_variables.png")
+    currents_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_currents.png")
 
     # Create the fiber model
     fiber = create_fiber()
@@ -140,7 +175,7 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     print(f'Time of last action potential detection: {time} ms')
 
     # Find the activation threshold
-    amp, ap = stimulation.find_threshold(fiber)
+    amp, ap = stimulation.find_threshold(fiber, exit_t_shift=exit_t_shift, thresh_num_aps=thresh_num_aps)
     print(f'Activation threshold: {amp} mA')
 
     # Plot and save the transmembrane voltage
@@ -148,7 +183,7 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     center_node = int(np.floor(0.5 * (1 + (len(fiber.sections) - 1) / 11)))
     sns.set(font_scale=1.5, style='whitegrid', palette='colorblind')
 
-    plt.figure()
+    plt.figure(figsize=(12, 8), dpi=300)  # Increased figsize and dpi
     plt.plot(
         np.array(stimulation.time), list(fiber.vm[end_node]), label='end node', color='royalblue', linewidth=2
     )
@@ -164,16 +199,16 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     ax2.grid(False)
     plt.ylabel('Stimulation amplitude (mA)')
     plt.title(f"{title}: Transmembrane Voltage and Stimulation")
-    plot_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_voltage_stimulation.png")
     plt.tight_layout()
     plt.savefig(plot_path)
+    plt.show()
     plt.close()
 
     # Plot and save the membrane voltage heatmap
     data = pd.DataFrame(np.array(fiber.vm[1:-1]))
     vrest = fiber[0].e_pas
     print('Membrane rest voltage:', vrest)
-    plt.figure()
+    plt.figure(figsize=(14, 10), dpi=300)  # Increased figsize and dpi
     g = sns.heatmap(
         data, cbar_kws={'label': '$V_m$ $(mV)$'}, cmap='seismic',
         vmax=np.amax(data.values) + vrest, vmin=-np.amax(data.values) + vrest
@@ -184,13 +219,13 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     labels = [round(np.array(stimulation.time)[int(ind)], 2) for ind in tick_locs]
     g.set_xticks(ticks=tick_locs, labels=labels)
     plt.title(f"{title}: Membrane Voltage Over Time\nRed=depolarized, Blue=hyperpolarized")
-    heatmap_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_voltage_heatmap.png")
     plt.tight_layout()
     plt.savefig(heatmap_path)
+    plt.show()
     plt.close()
 
     # Plot and save the gating variables
-    plt.figure()
+    plt.figure(figsize=(12, 8), dpi=300)  # Increased figsize and dpi
     for var in fiber.gating:
         plt.plot(np.array(stimulation.time), list(fiber.gating[var][center_node]), label=var)
     plt.legend()
@@ -202,13 +237,13 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     ax2.grid(False)
     plt.ylabel('Stimulation amplitude (mA)')
     plt.title(f"{title}: Gating Variables and Stimulation")
-    gating_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_gating_variables.png")
     plt.tight_layout()
     plt.savefig(gating_path)
+    plt.show()
     plt.close()
 
     # Plot and save the transmembrane currents
-    fig, axs = plt.subplots(3, 1, figsize=(5, 5), sharex=True, gridspec_kw={'hspace': 0.3})
+    fig, axs = plt.subplots(3, 1, figsize=(12, 10), dpi=300, sharex=True, gridspec_kw={'hspace': 0.3})  # Increased figsize and dpi
     axs[0].plot(np.array(stimulation.time)[:-1], amp * waveform, 'k--', label='Stimulus')
     axs[0].set_title(f"{title}: Stimulus")
     axs[1].plot(np.array(stimulation.time), list(fiber.vm[center_node]), color='mediumturquoise', linewidth=2, label='$V_m$')
@@ -220,23 +255,26 @@ def run_single_simulation(title, t, waveform, time_step, time_stop, stim_amp):
     axs[2].set_title('End node')
     axs[2].legend()
     axs[2].set_xlabel('Time (ms)')
-    currents_path = os.path.join(folder_name, f"{title.replace(' ', '_')}_currents.png")
-    plt.tight_layout()
-    plt.savefig(currents_path)
+    plt.tight_layout() 
+    plt.savefig(currents_path) 
+    plt.show() 
     plt.close()
+    
 
-
+    
     return title, amp
 
+
+
 #%% Function to run all simulations in parallel using all CPU cores
-def run_simulation_parallel(waveforms, time_step, time_stop, stim_amp):
+def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, stim_amp):
     activation_thresholds = {}
 
     # Use ProcessPoolExecutor for CPU-bound tasks
     with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
         # Submit all simulations to the executor
         futures = [
-            executor.submit(run_single_simulation, title, t, waveform, time_step, time_stop, stim_amp)
+            executor.submit(run_single_simulation, main_folder, title, t, waveform, time_step, time_stop, stim_amp, exit_t_shift, thresh_num_aps)
             for title, (t, waveform) in waveforms.items()
         ]
 
@@ -244,9 +282,9 @@ def run_simulation_parallel(waveforms, time_step, time_stop, stim_amp):
         for future in concurrent.futures.as_completed(futures):
             title, amp = future.result()
             activation_thresholds[title] = amp
+            
 
-    # Save the activation thresholds dictionary at the end
-    with open("activation_thresholds.json", "w") as f:
+    with open(os.path.join(folder_name, "activation_thresholds.json"), "w") as f:
         json.dump(activation_thresholds, f)
 
     return activation_thresholds
@@ -254,9 +292,22 @@ def run_simulation_parallel(waveforms, time_step, time_stop, stim_amp):
 #%% Execute the Simulation
 if __name__ == "__main__":
     tic=time.time()
-    waveforms = generate_waveforms(time_step, time_stop)
-    activation_thresholds = run_simulation_parallel(waveforms, time_step, time_stop, stim_amp)
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+
+    waveforms, waveform_configs = generate_waveforms(time_step, time_stop)
+    activation_thresholds = run_simulation_parallel(folder_name, waveforms, time_step, time_stop, stim_amp)
+    
     toc=time.time()
+    
+    simulation_parameters["Duration"] = f"{toc-tic} s"
+
+    with open(os.path.join(folder_name, "waveform_configs.json"), "w") as json_file:
+        json.dump(waveform_configs, json_file, indent=4)
+    
+    with open(os.path.join(folder_name, "simulation_parameters.json"), "w") as json_file:
+        json.dump(simulation_parameters, json_file, indent=4)
+    
     print(f"Time elapsed {toc-tic} s")
     
     

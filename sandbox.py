@@ -98,7 +98,7 @@ fiber.record_gating()  # save gating variables
 fiber.record_im()  # save membrane current
 
 # Using run_sim method to run sim. Method looks for action potentials at distal end of fiber
-stimamp = 5  # mA
+stimamp = -1.5  # mA
 ap, time = stimulation.run_sim(stimamp, fiber)
 print(f'Number of action potentials detected: {ap}')
 print(f'Time of last action potential detection: {time} ms')
