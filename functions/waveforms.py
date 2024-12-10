@@ -174,7 +174,9 @@ def burst_abott(frequency, burst_frequency, pulse_width, interphase_interval, ti
         last_biphasic_end = i + len(biphasic_pulse)  # Update last biphasic pulse end point
 
     # Add passive discharge directly after the last biphasic pulse
-    burst_pulse[last_biphasic_end:last_biphasic_end + len(passive_discharge)] = passive_discharge
+    slice_end = min(last_biphasic_end + len(passive_discharge), len(burst_pulse))
+    discharge_length = slice_end - last_biphasic_end  # Ensure lengths match
+    burst_pulse[last_biphasic_end:slice_end] = passive_discharge[:discharge_length]
 
     # Create waveform
     waveform = np.zeros_like(t)

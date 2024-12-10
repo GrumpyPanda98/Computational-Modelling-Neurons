@@ -19,7 +19,7 @@ from pyfibers import build_fiber, FiberModel, ScaledStim
 
 #%% Simulation Parameters
 time_step = 0.01          # ms, time step for simulation
-time_stop = 200           # ms, total simulation duration
+time_stop = 100           # ms, total simulation duration
 pre_stim = 10              # ms, duration of zeros at the start of stimulation
 length = 1e5              # micrometers, length of the fiber
 diameter = 4             # micrometers, diameter of the fiber
@@ -209,7 +209,13 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
 
     # Create the fiber model
     fiber = create_fiber()
-    fiber.potentials = fiber.point_source_potentials(0, 250, fiber.length / 2, start_threshold, conductivity)
+
+    # Calculate extracellular potentials for each electrode
+    anode = fiber.point_source_potentials(0, 250, fiber.length / 2, start_threshold, conductivity)
+    cathode = fiber.point_source_potentials(0, 250, fiber.length / 2+3000, -start_threshold, conductivity)
+    
+
+    fiber.potentials = cathode + anode
 
     # Initialize stimulation
     stimulation = ScaledStim(waveform=waveform, dt=time_step, tstop=time_stop)
@@ -218,9 +224,7 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
     amp, ap = stimulation.find_threshold(fiber, exit_t_shift=exit_t_shift, thresh_num_aps=thresh_num_aps)
     print(f'Activation threshold: {amp} mA')
     
-    
     stim_amp=amp*stim_multiplier
-    
     
     # Save recording
     fiber.record_vm()
