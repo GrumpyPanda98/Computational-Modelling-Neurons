@@ -124,8 +124,8 @@ plt.show()
 t_b, burst_wave = burst(
     frequency=40,          # Carrier frequency of the waveform
     burst_frequency=500,   # Frequency of the bursts
-    pulse_width=0.1,      # Width of each pulse
-    interphase_interval=0.1, # Interval between pulses
+    pulse_width=1,      # Width of each pulse
+    interphase_interval=0, # Interval between pulses
     time_stop=100,         # Total time for the waveform'
     time_step= 0.0001
 )

@@ -9,6 +9,9 @@ Created on Wed Oct  9 10:03:46 2024
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+
+
 def conventional(frequency, pulse_width, interphase_interval, time_stop, time_step, pos_percent=1):
     period = 1000/ frequency  # ms
     pulse_points = int(pulse_width / time_step)  # number of points for the pulse width
@@ -74,33 +77,66 @@ def burst(frequency, burst_frequency, pulse_width, interphase_interval, time_sto
     half_pulse_points = pulse_points // 2
     gap_points = int(interphase_interval / time_step)
     points_per_period_40Hz = int(period_40Hz / time_step)
-
+    
     # Create time vector
     t = np.arange(0, time_stop, time_step)
-
+    
     # Create biphasic pulse
     biphasic_pulse = np.concatenate([
         -np.ones(half_pulse_points),
         np.zeros(gap_points),
         np.ones(half_pulse_points)
     ])
-
+    
+    # Calculate total length of one biphasic pulse
+    single_pulse_length = len(biphasic_pulse)
+    
     # Create burst pulse
     burst_duration = period_40Hz / 2  # ms (burst duration)
     burst_points = int(burst_duration / time_step)
     burst_pulse = np.zeros(burst_points)
-
-    for i in range(0, burst_points, int(period_500Hz / time_step)):
-        burst_pulse[i:i + len(biphasic_pulse)] = biphasic_pulse[:len(burst_pulse[i:i + len(biphasic_pulse)])]
-
+    
+    # Calculate number of pulses based on burst frequency
+    num_pulses = int(burst_duration / period_500Hz)-1  # This should give us the correct number of pulses for 500Hz
+    
+    # Place pulses immediately after each other
+    for i in range(num_pulses):
+        start_idx = i * single_pulse_length
+        end_idx = start_idx + single_pulse_length
+        if end_idx <= burst_points:
+            burst_pulse[start_idx:end_idx] = biphasic_pulse
+    
     # Create waveform
     waveform = np.zeros_like(t)
     for i in range(0, len(t), points_per_period_40Hz):
         waveform[i:i + burst_points] = burst_pulse[:len(waveform[i:i + burst_points])]
-
-
+    
     return t, waveform
 
+t_b, burst_wave = burst(
+    frequency=40,          # Carrier frequency of the waveform
+    burst_frequency=500,   # Frequency of the bursts
+    pulse_width=1,      # Width of each pulse
+    interphase_interval=0, # Interval between pulses
+    time_stop=100,         # Total time for the waveform'
+    time_step= 0.0001
+)
+
+# # Plot 5: Burst "Biphasic Waveform"
+# fig5, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+# ax1.plot(t_b, burst_wave)
+# ax1.set_title('Burst "Biphasic Waveform" (Full)')
+# ax1.set_xlim(0, 100)
+# ax1.grid(True)
+
+# ax2.plot(t_b, burst_wave)
+# ax2.set_title('Burst "Biphasic Waveform" (Zoomed)')
+# ax2.set_xlim(25, 37)
+# ax2.grid(True)
+
+# fig5.suptitle('Burst "Biphasic Waveform"')
+# plt.tight_layout()
+# plt.show()
 
 
 def burst_passive(burst_frequency, carrier_frequency, time_stop, time_step, burst_duration, burst_tau, discharge_tau):
@@ -188,3 +224,82 @@ def burst_abott(frequency, burst_frequency, pulse_width, interphase_interval, ti
 
 
 
+
+
+def burst_abott_linear(frequency, burst_frequency, pulse_width, interphase_interval, time_stop, time_step, tau, discharge_length):
+    period_40Hz = 1000 / frequency  # ms (40 Hz)
+    pulse_points = int(pulse_width / time_step)
+    half_pulse_points = pulse_points // 2
+    points_per_period_40Hz = int(period_40Hz / time_step)
+    
+    # Create time vector
+    t = np.arange(0, time_stop, time_step)
+    
+    # Create a template for biphasic pulse
+    biphasic_pulse_template = np.concatenate([
+        np.full(half_pulse_points, -1),  # Negative phase
+        np.full(half_pulse_points, 1)  # Positive phase
+    ])
+    
+    # Create passive discharge phase
+    t_exp = np.arange(0, discharge_length, time_step)
+    passive_discharge = np.exp(-t_exp / tau)  # Exponential decay for passive discharge
+    passive_discharge = (passive_discharge - passive_discharge[-1]) / (passive_discharge[0] - passive_discharge[-1]) * 1  # Normalize
+    
+    # Create burst pulse with linearly increasing amplitude
+    burst_duration = period_40Hz / 2  # ms (burst duration)
+    burst_points = int(burst_duration / time_step)
+    burst_pulse = np.zeros(burst_points + len(passive_discharge))
+    
+    # Calculate total length of one biphasic pulse
+    pulse_length = len(biphasic_pulse_template)
+    
+    # Calculate number of pulses based on burst frequency
+    num_pulses = int(burst_duration / (1000/burst_frequency))-1  # burst_duration / period_500Hz
+    for i, amp in enumerate(np.linspace(0.2, 1, num_pulses)):
+        # Place each pulse immediately after the previous one
+        start_idx = i * pulse_length
+        end_idx = start_idx + pulse_length
+        if end_idx <= burst_points:
+            burst_pulse[start_idx:end_idx] = amp * biphasic_pulse_template
+    
+    # Add passive discharge after the last pulse
+    last_pulse_end = num_pulses * pulse_length
+    burst_pulse[last_pulse_end:last_pulse_end + len(passive_discharge)] = passive_discharge
+    
+    # Create final waveform
+    waveform = np.zeros_like(t)
+    for i in range(0, len(t), points_per_period_40Hz):
+        waveform[i:i + len(burst_pulse)] = burst_pulse[:len(waveform[i:i + len(burst_pulse)])]
+    
+    return t, waveform
+
+
+
+# # Generate the waveform with linearly increasing amplitude
+# t_ab, burstab_wave = burst_abott_linear(
+#     frequency=40,          # Carrier frequency of the waveform
+#     burst_frequency=500,   # Frequency of the bursts
+#     pulse_width=1,      # Width of each pulse
+#     interphase_interval=0, # Interval between pulses
+#     time_stop=100,         # Total time for the waveform
+#     time_step=0.0001,
+#     tau=0.8,              # Time constant for decay
+#     discharge_length=800
+# )
+
+# # Plot Burst Abott with linearly increasing amplitude
+# fig5, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+# ax1.plot(t_ab, burstab_wave)
+# ax1.set_title('Burst "Linearly Increasing Amplitude" (Full)')
+# ax1.set_xlim(0, 100)
+# ax1.grid(True)
+
+# ax2.plot(t_ab, burstab_wave)
+# ax2.set_title('Burst "Linearly Increasing Amplitude" (Zoomed)')
+# ax2.set_xlim(0, 10)
+# ax2.grid(True)
+
+# fig5.suptitle('Burst "Linearly Increasing Amplitude" Waveform')
+# plt.tight_layout()
+# plt.show()
