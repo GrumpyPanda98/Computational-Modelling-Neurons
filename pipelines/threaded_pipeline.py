@@ -20,9 +20,9 @@ from pyfibers import build_fiber, FiberModel, ScaledStim
 #%% Simulation Parameters
 time_step = 0.01          # ms, time step for simulation
 time_stop = 100           # ms, total simulation duration
-pre_stim = 10              # ms, duration of zeros at the start of stimulation
+pre_stim = 200              # ms, duration of zeros at the start of stimulation
 length = 1e5              # micrometers, length of the fiber
-diameter = 4             # micrometers, diameter of the fiber
+diameter = 6             # micrometers, diameter of the fiber
 temperature = 37          # Celsius, temperature of the simulation
 fiber_model = FiberModel.SMALL_MRG_INTERPOLATION  # Fiber model used for simulation
 exit_t_shift = 5          # ms, exit time shift
@@ -63,7 +63,7 @@ def create_fiber(fiber_model=fiber_model, length=length, diameter=diameter, temp
 
 #%% Generate and Plot All Waveforms
 def generate_waveforms(time_step, time_stop, pre_stim=0):
-    from functions.waveforms import conventional, conventional_passive, burst, burst_abott
+    from functions.waveforms import conventional, conventional_passive, burst, burst_abott, burst_abott_linear
     import numpy as np
     import matplotlib.pyplot as plt
     import os
@@ -75,7 +75,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "generator": conventional,
             "params": {
                 "frequency": 40,
-                "pulse_width": 0.2,
+                "pulse_width": 1,
                 "interphase_interval": 0.1,
                 "time_stop": time_stop,
                 "time_step": time_step
@@ -87,7 +87,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "generator": conventional_passive,
             "params": {
                 "frequency": 40,
-                "pulse_width": 0.2,
+                "pulse_width": 1,
                 "interphase_interval": 0.1,
                 "time_stop": time_stop,
                 "time_step": time_step,
@@ -101,7 +101,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "generator": conventional,
             "params": {
                 "frequency": 90,
-                "pulse_width": 0.25,
+                "pulse_width": 1,
                 "interphase_interval": 0.001,
                 "time_stop": time_stop,
                 "time_step": time_step
@@ -139,7 +139,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
         
         {
             "title": "Burst Abott Wave",
-            "generator": burst_abott,
+            "generator": burst_abott_linear,
             "params": {
                 "frequency": 40,
                 "burst_frequency": 500,
