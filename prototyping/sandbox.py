@@ -31,7 +31,7 @@ from functions.waveforms import conventional, conventional_passive, burst, burst
 
 fiber = build_fiber(
     fiber_model=FiberModel.MRG_DISCRETE,
-    length=50000,#micro m
+    length=5000,#micro m
     diameter=10, # micrometer for rats?
     temperature=37
 )
