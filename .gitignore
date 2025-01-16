@@ -8,3 +8,7 @@
 *.pyc
 *.bak
 *.ini
+*.svg
+*.h5
+*.xlsx
+*.bak

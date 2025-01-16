@@ -4,11 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-<<<<<<< Updated upstream
-recent_files = ['pipelines\\threaded_pipeline_loop.py', 'pipelines\\threshold_table.py', 'pipelines\\functions\\pipeline_functions.py']
-=======
-recent_files = ['functions\\waveforms.py', 't3_prototyping.py', 'waveform_test.py']
->>>>>>> Stashed changes
+recent_files = ['pipelines\\threshold_table.py', 'pipelines\\threaded_pipeline_loop.py', 'pipelines\\functions\\pipeline_functions.py', 'pipelines\\plot_thresholds.py']
 
 [main]
 version = 0.2.0
