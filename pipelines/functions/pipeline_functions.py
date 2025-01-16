@@ -39,7 +39,7 @@ def save_plot_simulation_results(folder_name, title, stimulation, fiber, wavefor
     """
     # Define paths for saving plots
     plot_path = f"{folder_name}/{title.replace(' ', '_')}_voltage_stimulation.{format}"
-    heatmap_path = f"{folder_name}/{title.replace(' ', '_')}_voltage_heatmap.png"
+    heatmap_path = f"{folder_name}/{title.replace(' ', '_')}_voltage_heatmap.{format}"
     gating_path = f"{folder_name}/{title.replace(' ', '_')}_gating_variables.{format}"
     currents_path = f"{folder_name}/{title.replace(' ', '_')}_currents.{format}"
     
@@ -88,7 +88,8 @@ def save_plot_simulation_results(folder_name, title, stimulation, fiber, wavefor
         cbar_kws={'label': '$V_m$ $(mV)$'}, 
         cmap='seismic',
         vmax=np.amax(data.values) + vrest, 
-        vmin=-np.amax(data.values) + vrest
+        vmin=-np.amax(data.values) + vrest,
+        rasterized=True
     )
     plt.ylabel('Node index')
     plt.xlabel('Time (ms)')

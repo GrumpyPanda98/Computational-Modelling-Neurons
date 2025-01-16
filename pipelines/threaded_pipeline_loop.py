@@ -20,7 +20,7 @@ from pyfibers import build_fiber, FiberModel, ScaledStim
 time_step = 0.05         # ms, time step for simulation
 time_stop = 200         # ms, total simulation duration
 pre_stim = 10              # ms, duration of zeros at the start of stimulation
-length = 1e6              # micrometers, length of the fiber
+length = 1e5              # micrometers, length of the fiber
 diameter = None       # micrometers, diameter of the fiber
 temperature = 37          # Celsius, temperature of the simulation
 fiber_model = FiberModel.SMALL_MRG_INTERPOLATION  # Fiber model used for simulation
@@ -163,7 +163,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
         axes[i, 1].set_xlim(*config["zoom_range"])
         axes[i, 1].grid(True)
     
-    plt.savefig(os.path.join(folder_name, "waveform_plots.png"))
+    plt.savefig(os.path.join(folder_name, "waveform_plots.svg"))
     plt.show()
     
     for config in waveform_configs:
@@ -195,8 +195,9 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
     stimulation = ScaledStim(waveform=waveform, dt=time_step, tstop=time_stop)
 
     # Find the activation threshold
-    amp, ap = stimulation.find_threshold(fiber, exit_t_shift=exit_t_shift, thresh_num_aps=thresh_num_aps)
+    amp, ap = stimulation.find_threshold(fiber, exit_t_shift=exit_t_shift, thresh_num_aps=thresh_num_aps, silent=True)
     print(f'Activation threshold: {amp} mA')
+    
 
     stim_amp = amp * stim_multiplier
 
@@ -209,17 +210,21 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
     ap, time = stimulation.run_sim(stim_amp, fiber)
     print(f'Number of action potentials detected: {ap}')
     print(f'Time of last action potential detection: {time} ms')
+    
+    cv = fiber.measure_cv(start=0.5, end=0.9, tolerance=100)
+    print(f'Conduction velocity: {cv:.2f} m/s')
 
     # Generate all plots using the new plotting function
     save_plot_simulation_results(folder_name, title, stimulation, fiber, waveform, stim_amp, ap, time, format="svg")
 
-    return title, amp
+    return title, amp, cv
     
 
 
 #%% Function to run all simulations in parallel using all CPU cores
 def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diameter):
     activation_thresholds = {}
+    conduction_velocities = {}
     
     # Use ThreadPoolExecutor for CPU-bound tasks
     with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
@@ -231,24 +236,28 @@ def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diamet
     
         # Collect the results as they complete
         for future in concurrent.futures.as_completed(futures):
-            title, amp = future.result()
+            title, amp, cv = future.result()
             activation_thresholds[title] = amp
+            conduction_velocities[title] = cv
             
     
     with open(os.path.join(folder_name, "activation_thresholds.json"), "w") as f:
         json.dump(activation_thresholds, f)
+        
+    with open(os.path.join(folder_name, "conduction_velocity.json"), "w") as f:
+        json.dump(conduction_velocities, f)
 
     return activation_thresholds
 
 #%% Execute the Simulation
 
-for diameter in np.arange(2.5,6,0.50):
+for diameter in np.arange(2.0,6,0.5):
     if __name__ == "__main__":
         tic=time.time()
         
         # Create a timestamped folder
         # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        folder_name = f"runs\diameter\{diameter}"
+        folder_name = f"runs\diameter\{diameter.round(2)}"
     
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)

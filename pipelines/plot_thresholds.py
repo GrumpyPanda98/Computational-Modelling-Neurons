@@ -1,33 +1,179 @@
 import matplotlib.pyplot as plt
 
-# 1. Define the diameter values (x-axis)
-diameters = [2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5]
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 14 11:06:15 2025
 
-# 2. Define the threshold values for each method
-abott = [-0.02511, -0.02130, -0.01949, -0.01495, -0.01205, -0.01350, -0.01163, -0.01731]
-burst = [-0.02372, -0.01949, -0.01659, -0.01465, -0.01326, -0.01338, -0.01163, -0.01743]
-conv  = [-0.02378, -0.01918, -0.01616, -0.01465, -0.01296, -0.01338, -0.01139, -0.01737]
-conv_passive = [-0.02323, -0.02003, -0.01858, -0.01441, -0.01520, -0.01320, -0.01526, -0.01749]
-fast  = [-0.02378, -0.01918, -0.01616, -0.01465, -0.01296, -0.01338, -0.01139, -0.01737]
-fast_passive = [-0.02378, -0.02045, -0.01894, -0.01465, -0.01544, -0.01338, -0.01586, -0.01779]
+@author: nicko
+"""
+
+import os
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment
+
+# Define the base directory
+base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/diameter_200ms_1e5mu"  # Adjust this if needed
+
+# Initialize data storage
+data = []
+
+# Walk through the folder structure
+for root, dirs, files in os.walk(base_dir):
+    for file in files:
+        if file == "activation_thresholds.json":
+            # Extract diameter folder name from path
+            path_parts = root.split(os.sep)
+            folder_name = path_parts[-1]  # e.g. '2.0' or '2_5', etc.
+
+            # Attempt to parse as float; if it fails, just keep the string
+            try:
+                diameter_value = float(folder_name)
+            except ValueError:
+                diameter_value = folder_name
+
+            # Read the JSON file
+            json_path = os.path.join(root, file)
+            with open(json_path, "r") as f:
+                thresholds = json.load(f)
+
+            # Append data to the list for each waveform type
+            for waveform, value in thresholds.items():
+                data.append({
+                    "Diameter": diameter_value,
+                    "Waveform": waveform,
+                    "Threshold Value": value
+                })
+
+# Convert data to a DataFrame
+df = pd.DataFrame(data)
+
+# Round the threshold values to 5 decimals (or 3, as you had originally)
+df["Threshold Value"] = df["Threshold Value"].round(5)
+
+# Pivot the table for better visualization
+table = df.pivot_table(
+    index="Diameter", 
+    columns="Waveform", 
+    values="Threshold Value"
+)
+
+# Rename the columns to the desired names (adjust if needed)
+table.columns = ["Abott", 
+                 "Burst", 
+                 "Conventional", 
+                 "Conventional Passive", 
+                 "Fast", 
+                 "Fast Passive"]
+
+# Sort table by Diameter if they are numeric
+# (If some diameter folders are strings, the sort might fail or produce unexpected results)
+table.sort_index(inplace=True)
 
 # 3. Create a figure and plot each method with a different marker/color
 plt.figure(figsize=(8, 5))
 
+# Extract diameters as your x-axis
+x_vals = table.index
 
-plt.plot(diameters, conv,          marker='s', label='Conventional')
-plt.plot(diameters, conv_passive, linestyle='--',  marker='d', label='Conventional Passive')
+plt.plot(x_vals, -table["Conventional"],          marker='s', label='Conventional')
+plt.plot(x_vals, -table["Conventional Passive"], linestyle='--',  marker='d', label='Conventional Passive')
 
-plt.plot(diameters, fast,          marker='>', label='Fast')
-plt.plot(diameters, fast_passive, linestyle='--',  marker='<', label='Fast Passive')
+plt.plot(x_vals, -table["Fast"],          marker='>', label='Fast')
+plt.plot(x_vals, -table["Fast Passive"], linestyle='--',  marker='<', label='Fast Passive')
 
-plt.plot(diameters, burst,         marker='^', label='Burst')
-plt.plot(diameters, abott, linestyle='--',         marker='o', label='Abott')
+plt.plot(x_vals, -table["Burst"],         marker='^', label='Burst')
+plt.plot(x_vals, -table["Abott"], linestyle='--',         marker='o', label='Abott')
 
 # 4. Labeling and cosmetics
 plt.title('Activation Threshold vs. Diameter', fontsize=14)
 plt.xlabel('Diameter (μm)', fontsize=12)
 plt.ylabel('Threshold (mA)', fontsize=12)
+plt.grid(True)
+plt.legend(fontsize=10)
+plt.tight_layout()
+
+# 5. Show the plot
+plt.show()
+
+#%% CV
+
+# Initialize data storage
+data = []
+
+# Walk through the folder structure
+for root, dirs, files in os.walk(base_dir):
+    for file in files:
+        if file == "conduction_velocity.json":
+            # Extract diameter folder name from path
+            path_parts = root.split(os.sep)
+            folder_name = path_parts[-1]  # e.g. '2.0' or '2_5', etc.
+
+            # Attempt to parse as float; if it fails, just keep the string
+            try:
+                diameter_value = float(folder_name)
+            except ValueError:
+                diameter_value = folder_name
+
+            # Read the JSON file
+            json_path = os.path.join(root, file)
+            with open(json_path, "r") as f:
+                thresholds = json.load(f)
+
+            # Append data to the list for each waveform type
+            for waveform, value in thresholds.items():
+                data.append({
+                    "Diameter": diameter_value,
+                    "Waveform": waveform,
+                    "Threshold Value": value
+                })
+
+# Convert data to a DataFrame
+df = pd.DataFrame(data)
+
+# Round the threshold values to 5 decimals (or 3, as you had originally)
+df["Threshold Value"] = df["Threshold Value"].round(5)
+
+# Pivot the table for better visualization
+table = df.pivot_table(
+    index="Diameter", 
+    columns="Waveform", 
+    values="Threshold Value"
+)
+
+# Rename the columns to the desired names (adjust if needed)
+table.columns = ["Abott", 
+                 "Burst", 
+                 "Conventional", 
+                 "Conventional Passive", 
+                 "Fast", 
+                 "Fast Passive"]
+
+# Sort table by Diameter if they are numeric
+# (If some diameter folders are strings, the sort might fail or produce unexpected results)
+table.sort_index(inplace=True)
+
+# 3. Create a figure and plot each method with a different marker/color
+plt.figure(figsize=(8, 5))
+
+# Extract diameters as your x-axis
+x_vals = table.index
+
+plt.plot(x_vals, table["Conventional"],          marker='s', label='Conventional')
+plt.plot(x_vals, table["Conventional Passive"], linestyle='--',  marker='d', label='Conventional Passive')
+
+plt.plot(x_vals, table["Fast"],          marker='>', label='Fast')
+plt.plot(x_vals, table["Fast Passive"], linestyle='--',  marker='<', label='Fast Passive')
+
+plt.plot(x_vals, table["Burst"],         marker='^', label='Burst')
+plt.plot(x_vals, table["Abott"], linestyle='--',         marker='o', label='Abott')
+
+# 4. Labeling and cosmetics
+plt.title('Conduction Velocity vs. Diameter', fontsize=14)
+plt.xlabel('Diameter (μm)', fontsize=12)
+plt.ylabel('Conduction Velocity (m/s)', fontsize=12)
 plt.grid(True)
 plt.legend(fontsize=10)
 plt.tight_layout()

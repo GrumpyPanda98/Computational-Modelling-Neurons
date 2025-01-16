@@ -19,7 +19,7 @@ time_step = 0.001
 time_stop = 100
 
 #%% Fiber Model Creation Function
-def create_fiber(fiber_model=FiberModel.MRG_DISCRETE, length=500, diameter=10, temperature=37):
+def create_fiber(fiber_model=FiberModel.SMALL_MRG_INTERPOLATION, length=500, diameter=10, temperature=37):
     return build_fiber(fiber_model=fiber_model, length=length, diameter=diameter, temperature=temperature)
 
 #%% Generate and Plot All Waveforms
