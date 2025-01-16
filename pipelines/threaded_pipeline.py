@@ -30,6 +30,9 @@ thresh_num_aps = 1        # n ap needed for threshold search
 stim_multiplier = 1.2     # multiplier for stimulus strength
 start_threshold = 1       # mA, starting threshold for stimulation
 conductivity = 0.15       # S/m, conductivity of the medium
+point_source_polarity = "BIPOLAR" # Type of polarity; BIPOLAR, CATHODE, ANODE
+if point_source_polarity == "BIPOLAR":
+    point_source_dist = 3000 # micrometers, distance between point sources
 
 # Consolidated simulation parameters
 simulation_parameters = {
@@ -43,7 +46,9 @@ simulation_parameters = {
     "exit_t_shift": exit_t_shift,        # ms
     "thresh_num_aps": thresh_num_aps,    # Action potentials threshold
     "stim_multiplier": stim_multiplier, # Multiplier for stimulation
-    "conductivity": conductivity         # S/m
+    "conductivity": conductivity,         # S/m
+    "point_source_polarity": point_source_polarity, 
+    "point_source_dist": point_source_dist # micrometers
 }
 
 
@@ -211,11 +216,19 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
     fiber = create_fiber()
 
     # Calculate extracellular potentials for each electrode
-    anode = fiber.point_source_potentials(0, 250, fiber.length / 2, start_threshold, conductivity)
-    cathode = fiber.point_source_potentials(0, 250, fiber.length / 2+3000, -start_threshold, conductivity)
     
-
-    fiber.potentials = cathode + anode
+    if point_source_polarity == "BIPOLAR":
+        anode = fiber.point_source_potentials(0, 250, fiber.length / 2, start_threshold, conductivity)
+        cathode = fiber.point_source_potentials(0, 250, fiber.length / 2+point_source_dist, -start_threshold, conductivity)
+        fiber.potentials = cathode + anode
+        
+    if point_source_polarity == "CATHODE":
+        fiber.potentials = cathode = fiber.point_source_potentials(0, 250, fiber.length / 2, -start_threshold, conductivity)
+        
+    if point_source_polarity == "ANODE":
+        fiber.potentials = cathode = fiber.point_source_potentials(0, 250, fiber.length / 2, start_threshold, conductivity)
+        
+    
 
     # Initialize stimulation
     stimulation = ScaledStim(waveform=waveform, dt=time_step, tstop=time_stop)
@@ -330,7 +343,7 @@ def run_simulation_parallel(main_folder, waveforms, time_step, time_stop):
     activation_thresholds = {}
 
     # Use ThreadPoolExecutor for CPU-bound tasks
-    with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=-1) as executor:
         # Submit all simulations to the executor
         futures = [
             executor.submit(run_single_simulation, main_folder, title, t, waveform, time_step, time_stop, exit_t_shift, thresh_num_aps, conductivity, start_threshold)
