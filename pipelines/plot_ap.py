@@ -67,8 +67,8 @@ action_table = action_df.pivot_table(
 )
 
 # Rename the columns to the desired names (adjust if needed)
-action_table.columns = ["Abott", 
-                        "Burst", 
+action_table.columns = ["Burst", 
+                        "Burst Passive", 
                         "Conventional", 
                         "Conventional Passive", 
                         "Fast", 
@@ -93,7 +93,7 @@ plt.plot(x_vals, 100 * action_table_subset["Fast"] / 18,          marker='s', la
 plt.plot(x_vals, 100 * action_table_subset["Fast Passive"] / 18, linestyle='--',  marker='o', label='Fast Passive', color=palette[1])
 
 plt.plot(x_vals, 100 * action_table_subset["Burst"] / 40,         marker='s', label='Burst', color=palette[2])
-plt.plot(x_vals, 100 * action_table_subset["Abott"] / 40, linestyle='--',         marker='o', label='Burst Passive', color=palette[2])
+plt.plot(x_vals, 100 * action_table_subset["Burst Passive"] / 40, linestyle='--',         marker='o', label='Burst Passive', color=palette[2])
 
 # Labeling and cosmetics
 plt.title('Fidelity vs. Stimulation Amplitude', fontsize=14)
