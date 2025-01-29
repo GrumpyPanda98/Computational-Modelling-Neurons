@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['pipelines\\plot_thresholds.py', 'pipelines\\plot_ap.py', 'waveform_plotter.py', 'heatmap_subplotter.py', 'pipelines\\threaded_pipeline_loop_stim.py', 'pipelines\\functions\\pipeline_functions.py']
+recent_files = ['pipelines\\threaded_pipeline_loop.py', 'pipelines\\threaded_pipeline_loop_stim.py', 'pipelines\\threaded_pipeline_single.py', 'pipelines\\plot_thresholds.py', 'pipelines\\plot_ap.py']
 
 [main]
 version = 0.2.0

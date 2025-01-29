@@ -13,8 +13,6 @@ import json
 import numpy as np
 from pyfibers import build_fiber, FiberModel, ScaledStim
 
-
-
     
 #%% Simulation Parameters
 time_step = 0.05         # ms, time step for simulation

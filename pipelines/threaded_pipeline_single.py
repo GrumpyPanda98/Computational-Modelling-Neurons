@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 29 19:53:33 2025
+
+@author: nicko
+"""
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -14,14 +21,13 @@ import numpy as np
 from pyfibers import build_fiber, FiberModel, ScaledStim
 
 
-
     
 #%% Simulation Parameters
 time_step = 0.05         # ms, time step for simulation
 time_stop = 200         # ms, total simulation duration
 pre_stim = 10              # ms, duration of zeros at the start of stimulation
 length = 1e5              # micrometers, length of the fiber
-diameter = None       # micrometers, diameter of the fiber
+diameter = 3       # micrometers, diameter of the fiber
 temperature = 37          # Celsius, temperature of the simulation
 fiber_model = FiberModel.SMALL_MRG_INTERPOLATION  # Fiber model used for simulation
 exit_t_shift = 10          # ms, exit time shift
@@ -44,58 +50,6 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
     
     # Define parameters for each waveform
     waveform_configs = [
-        {
-            "title": "Conventional Active Charge Balance",     
-            "generator": conventional,
-            "params": {
-                "frequency": 40,
-                "pulse_width": 1,
-                "interphase_interval": 0,
-                "time_stop": time_stop,
-                "time_step": time_step
-            },
-            "zoom_range": (time_stop-25, time_stop)
-        },
-        {
-            "title": "Conventional Passive Charge Balance",
-            "generator": conventional_passive,
-            "params": {
-                "frequency": 40,
-                "pulse_width": 1,
-                "interphase_interval": 0,
-                "time_stop": time_stop,
-                "time_step": time_step,
-                "tau": 0.5,
-                "discharge_time_factor": 80
-            },
-            "zoom_range": (time_stop-25, time_stop)
-        },
-        {
-            "title": "Fast Active Charge Balance",
-            "generator": conventional,
-            "params": {
-                "frequency": 90,
-                "pulse_width": 1,
-                "interphase_interval": 0,
-                "time_stop": time_stop,
-                "time_step": time_step
-            },
-            "zoom_range": (time_stop-25, time_stop)
-        },
-        {
-            "title": "Fast Passive Charge Balance",
-            "generator": conventional_passive,
-            "params": {
-                "frequency": 90,
-                "pulse_width": 1,
-                "interphase_interval": 0,
-                "time_stop": time_stop,
-                "time_step": time_step,
-                "tau": 0.5,
-                "discharge_time_factor": 80
-            },
-            "zoom_range": (time_stop-25, time_stop)
-        },
         
         {
             "title": "Burst Active Charge Balance",
@@ -110,6 +64,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             },
             "zoom_range": (time_stop-25, time_stop)
         },
+        
         
         {
             "title": "Burst Passive Charge Balance",
@@ -251,46 +206,46 @@ def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diamet
 
 #%% Execute the Simulation
 
-for diameter in np.arange(2.0,5.5,0.5):
-    if __name__ == "__main__":
-        tic=time.time()
-        
-        # Create a timestamped folder
-        # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        folder_name = f"runs\diameter\{diameter.round(2)}"
+
+if __name__ == "__main__":
+    tic=time.time()
     
-        if not os.path.exists(folder_name):
-            os.makedirs(folder_name)
-        
-        waveforms, waveform_configs = generate_waveforms(time_step, time_stop, pre_stim)
-        run_simulation_parallel(folder_name, waveforms, time_step, time_stop+pre_stim, diameter=diameter)
-        
-        toc=time.time()
-        
-        # Consolidated simulation parameters
-        simulation_parameters = {
-        "time_step": time_step,              # ms
-        "time_stop": time_stop,              # ms
-        "pre_stim": pre_stim,                # ms, zeros before stimulation
-        "length": length,                    # micrometers
-        "diameter": diameter,                # micrometers
-        "temperature": temperature,          # Celsius
-        "fiber_model": f'{fiber_model}',     # Fiber model name
-        "exit_t_shift": exit_t_shift,        # ms
-        "thresh_num_aps": thresh_num_aps,    # Action potentials threshold
-        "stim_multiplier": stim_multiplier, # Multiplier for stimulation
-        "conductivity": conductivity         # S/m
-        }
-        
-        simulation_parameters["Duration"] = f"{toc-tic} s"
-        
-        with open(os.path.join(folder_name, "waveform_configs.json"), "w") as json_file:
-            json.dump(waveform_configs, json_file, indent=4)
-        
-        with open(os.path.join(folder_name, "simulation_parameters.json"), "w") as json_file:
-            json.dump(simulation_parameters, json_file, indent=4)
-        
-        print(f"Time elapsed {toc-tic} s")
+    # Create a timestamped folder
+    # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    folder_name = f"C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/single_runs/diameter{diameter}time_stop{time_stop}exit_t_shift{exit_t_shift}"
+
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    
+    waveforms, waveform_configs = generate_waveforms(time_step, time_stop, pre_stim)
+    run_simulation_parallel(folder_name, waveforms, time_step, time_stop+pre_stim, diameter=diameter)
+    
+    toc=time.time()
+    
+    # Consolidated simulation parameters
+    simulation_parameters = {
+    "time_step": time_step,              # ms
+    "time_stop": time_stop,              # ms
+    "pre_stim": pre_stim,                # ms, zeros before stimulation
+    "length": length,                    # micrometers
+    "diameter": diameter,                # micrometers
+    "temperature": temperature,          # Celsius
+    "fiber_model": f'{fiber_model}',     # Fiber model name
+    "exit_t_shift": exit_t_shift,        # ms
+    "thresh_num_aps": thresh_num_aps,    # Action potentials threshold
+    "stim_multiplier": stim_multiplier, # Multiplier for stimulation
+    "conductivity": conductivity         # S/m
+    }
+    
+    simulation_parameters["Duration"] = f"{toc-tic} s"
+    
+    with open(os.path.join(folder_name, "waveform_configs.json"), "w") as json_file:
+        json.dump(waveform_configs, json_file, indent=4)
+    
+    with open(os.path.join(folder_name, "simulation_parameters.json"), "w") as json_file:
+        json.dump(simulation_parameters, json_file, indent=4)
+    
+    print(f"Time elapsed {toc-tic} s")
 
 
 
