@@ -17,16 +17,16 @@ from pyfibers import build_fiber, FiberModel, ScaledStim
 
     
 #%% Simulation Parameters
-time_step = 0.01         # ms, time step for simulation
+time_step = 0.05         # ms, time step for simulation
 time_stop = 200         # ms, total simulation duration
 pre_stim = 10              # ms, duration of zeros at the start of stimulation
 length = 1e5              # micrometers, length of the fiber
-diameter = None       # micrometers, diameter of the fiber
+diameter = 4       # micrometers, diameter of the fiber
 temperature = 37          # Celsius, temperature of the simulation
 fiber_model = FiberModel.SMALL_MRG_INTERPOLATION  # Fiber model used for simulation
 exit_t_shift = 5          # ms, exit time shift
 thresh_num_aps = 1        # n ap needed for threshold search
-stim_multiplier = 1.2     # multiplier for stimulus strength
+stim_multiplier = None     # multiplier for stimulus strength
 start_threshold = 1       # mA, starting threshold for stimulation
 conductivity = 0.15       # S/m, conductivity of the medium
 
@@ -45,12 +45,12 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
     # Define parameters for each waveform
     waveform_configs = [
         {
-            "title": "Conventional Active Charge Balance",     
+            "title": "Conventional Biphasic Waveform",     
             "generator": conventional,
             "params": {
                 "frequency": 40,
                 "pulse_width": 0.2,
-                "interphase_interval": 0,
+                "interphase_interval": 0.1,
                 "time_stop": time_stop,
                 "time_step": time_step
             },
@@ -62,7 +62,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "params": {
                 "frequency": 40,
                 "pulse_width": 0.2,
-                "interphase_interval": 0,
+                "interphase_interval": 0.1,
                 "time_stop": time_stop,
                 "time_step": time_step,
                 "tau": 0.5,
@@ -71,12 +71,12 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "zoom_range": (time_stop-25, time_stop)
         },
         {
-            "title": "Fast Active Charge Balance",
+            "title": "Fast Biphasic Waveform",
             "generator": conventional,
             "params": {
                 "frequency": 90,
                 "pulse_width": 0.2,
-                "interphase_interval": 0,
+                "interphase_interval": 0.001,
                 "time_stop": time_stop,
                 "time_step": time_step
             },
@@ -88,7 +88,7 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
             "params": {
                 "frequency": 90,
                 "pulse_width": 0.2,
-                "interphase_interval": 0,
+                "interphase_interval": 0.001,
                 "time_stop": time_stop,
                 "time_step": time_step,
                 "tau": 0.5,
@@ -98,13 +98,13 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
         },
         
         {
-            "title": "Burst Active Charge Balance",
+            "title": "Burst Wave",
             "generator": burst,
             "params": {
                 "frequency": 40,
                 "burst_frequency": 500,
                 "pulse_width": 1,
-                "interphase_interval": 0,
+                "interphase_interval": 0.001,
                 "time_stop": time_stop,
                 "time_step": time_step,
             },
@@ -112,13 +112,13 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
         },
         
         {
-            "title": "Burst Passive Charge Balance",
+            "title": "Burst Abott Wave",
             "generator": burst_abott_linear,
             "params": {
                 "frequency": 40,
                 "burst_frequency": 500,
                 "pulse_width": 1,
-                "interphase_interval": 0,
+                "interphase_interval": 0.001,
                 "time_stop": time_stop,
                 "time_step": time_step,
                 "tau": 3,
@@ -172,8 +172,8 @@ def generate_waveforms(time_step, time_stop, pre_stim=0):
     return waveforms, config
 
 
-
-def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop, exit_t_shift, thresh_num_aps, conductivity, start_threshold, diameter):
+#%% Run a single simulation
+def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop, exit_t_shift, thresh_num_aps, conductivity, start_threshold, diameter, stim_multiplier):
     from pipelines.functions.pipeline_functions import save_plot_simulation_results
     
     print(f"Running simulation for: {title}")
@@ -207,38 +207,43 @@ def run_single_simulation(main_folder, title, t, waveform, time_step, time_stop,
     fiber.record_im()
 
     # Run the simulation
-    ap, time = stimulation.run_sim(stim_amp, fiber)
+    ap, last_ap_time = stimulation.run_sim(stim_amp, fiber)
     print(f'Number of action potentials detected: {ap}')
-    print(f'Time of last action potential detection: {time} ms')
+    print(f'Time of last action potential detection: {last_ap_time} ms')
     
     cv = fiber.measure_cv(start=0.5, end=0.9, tolerance=100)
     print(f'Conduction velocity: {cv:.2f} m/s')
 
     # Generate all plots using the new plotting function
-    save_plot_simulation_results(folder_name, title, stimulation, fiber, waveform, stim_amp, ap, time, format="svg")
+    save_plot_simulation_results(folder_name, title, stimulation, fiber, waveform, stim_amp, ap, last_ap_time, format="svg")
 
-    return title, amp, cv
+    return title, amp, cv, ap, last_ap_time
     
 
-
 #%% Function to run all simulations in parallel using all CPU cores
-def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diameter):
+
+def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diameter, stim_multiplier):
     activation_thresholds = {}
     conduction_velocities = {}
+    action_potentials = {}
+    last_ap_times = {}
     
     # Use ThreadPoolExecutor for CPU-bound tasks
     with concurrent.futures.ProcessPoolExecutor(max_workers=16) as executor:
         # Submit all simulations to the executor
         futures = [
-            executor.submit(run_single_simulation, main_folder, title, t, waveform, time_step, time_stop, exit_t_shift, thresh_num_aps, conductivity, start_threshold, diameter)
+            executor.submit(run_single_simulation, main_folder, title, t, waveform, time_step, time_stop, exit_t_shift, thresh_num_aps, conductivity, start_threshold, diameter, stim_multiplier)
             for title, (t, waveform) in waveforms.items()
         ]
     
         # Collect the results as they complete
         for future in concurrent.futures.as_completed(futures):
-            title, amp, cv = future.result()
+            title, amp, cv, ap, last_ap_time = future.result()
             activation_thresholds[title] = amp
             conduction_velocities[title] = cv
+            action_potentials[title] = ap
+            last_ap_times[title] = last_ap_time
+            
             
     
     with open(os.path.join(folder_name, "activation_thresholds.json"), "w") as f:
@@ -246,24 +251,29 @@ def run_simulation_parallel(main_folder, waveforms, time_step, time_stop, diamet
         
     with open(os.path.join(folder_name, "conduction_velocity.json"), "w") as f:
         json.dump(conduction_velocities, f)
+        
+    with open(os.path.join(folder_name, "action_potentials.json"), "w") as f:
+        json.dump(action_potentials, f)
+        
+    with open(os.path.join(folder_name, "last_ap_times.json"), "w") as f:
+        json.dump(last_ap_times, f)
 
-    return activation_thresholds
 
 #%% Execute the Simulation
 
-for diameter in np.arange(2.0,6,0.5):
-    if __name__ == "__main__":
+if __name__ == "__main__":
+    for stim_multiplier in np.arange(1.4,1.5,0.1):
         tic=time.time()
         
         # Create a timestamped folder
         # timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        folder_name = f"runs\diameter\{diameter.round(2)}"
+        folder_name = f"runs\stim_multiplier\{stim_multiplier.round(3)}"
     
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
         
         waveforms, waveform_configs = generate_waveforms(time_step, time_stop, pre_stim)
-        run_simulation_parallel(folder_name, waveforms, time_step, time_stop+pre_stim, diameter=diameter)
+        run_simulation_parallel(folder_name, waveforms, time_step, time_stop+pre_stim, diameter, stim_multiplier)
         
         toc=time.time()
         
@@ -291,6 +301,6 @@ for diameter in np.arange(2.0,6,0.5):
             json.dump(simulation_parameters, json_file, indent=4)
         
         print(f"Time elapsed {toc-tic} s")
-
-
-
+    
+    
+    

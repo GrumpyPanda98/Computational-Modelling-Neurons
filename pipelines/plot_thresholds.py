@@ -13,9 +13,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
-
+import seaborn as sns
 # Define the base directory
-base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/diameter_200ms_1e5mu"  # Adjust this if needed
+base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/diameter_pw0.2"  # Adjust this if needed
+
+# Define a color palette using seaborn
+palette = sns.color_palette("Set1", n_colors=3)  # 3 colors for Conventional, Fast, Burst
 
 # Initialize data storage
 data = []
@@ -51,7 +54,7 @@ for root, dirs, files in os.walk(base_dir):
 df = pd.DataFrame(data)
 
 # Round the threshold values to 5 decimals (or 3, as you had originally)
-df["Threshold Value"] = df["Threshold Value"].round(5)
+df["Threshold Value"] = df["Threshold Value"].round(5)*1000 #to micro
 
 # Pivot the table for better visualization
 table = df.pivot_table(
@@ -78,23 +81,23 @@ plt.figure(figsize=(8, 5))
 # Extract diameters as your x-axis
 x_vals = table.index
 
-plt.plot(x_vals, -table["Conventional"],          marker='s', label='Conventional')
-plt.plot(x_vals, -table["Conventional Passive"], linestyle='--',  marker='d', label='Conventional Passive')
+plt.plot(x_vals, -table["Conventional"],          marker='s', label='Conventional', color=palette[0])
+plt.plot(x_vals, -table["Conventional Passive"], linestyle='--',  marker='o', label='Conventional Passive', color=palette[0])
 
-plt.plot(x_vals, -table["Fast"],          marker='>', label='Fast')
-plt.plot(x_vals, -table["Fast Passive"], linestyle='--',  marker='<', label='Fast Passive')
+plt.plot(x_vals, -table["Fast"],          marker='s', label='Fast', color=palette[1])
+plt.plot(x_vals, -table["Fast Passive"], linestyle='--',  marker='o', label='Fast Passive', color=palette[1])
 
-plt.plot(x_vals, -table["Burst"],         marker='^', label='Burst')
-plt.plot(x_vals, -table["Abott"], linestyle='--',         marker='o', label='Abott')
+plt.plot(x_vals, -table["Burst"],         marker='s', label='Burst', color=palette[2])
+plt.plot(x_vals, -table["Abott"], linestyle='--',         marker='o', label='Burst Passive', color=palette[2])
 
 # 4. Labeling and cosmetics
 plt.title('Activation Threshold vs. Diameter', fontsize=14)
 plt.xlabel('Diameter (μm)', fontsize=12)
-plt.ylabel('Threshold (mA)', fontsize=12)
+plt.ylabel('Threshold (μA)', fontsize=12)
 plt.grid(True)
 plt.legend(fontsize=10)
 plt.tight_layout()
-
+plt.savefig(f"{base_dir}/at.svg")
 # 5. Show the plot
 plt.show()
 
@@ -155,6 +158,7 @@ table.columns = ["Abott",
 # (If some diameter folders are strings, the sort might fail or produce unexpected results)
 table.sort_index(inplace=True)
 
+
 # 3. Create a figure and plot each method with a different marker/color
 plt.figure(figsize=(8, 5))
 
@@ -177,6 +181,6 @@ plt.ylabel('Conduction Velocity (m/s)', fontsize=12)
 plt.grid(True)
 plt.legend(fontsize=10)
 plt.tight_layout()
-
+plt.savefig(f"{base_dir}/cv.svg")
 # 5. Show the plot
 plt.show()

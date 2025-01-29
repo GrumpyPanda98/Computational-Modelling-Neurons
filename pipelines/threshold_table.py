@@ -12,7 +12,7 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment
 
 # Define the base directory
-base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/diameter"  # Adjust this to the correct path
+base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/diameter_200ms_1e5mu_cv"  # Adjust this to the correct path
 
 # Initialize data storage
 data = []

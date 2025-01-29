@@ -31,15 +31,15 @@ from functions.waveforms import conventional, conventional_passive, burst, burst
 
 fiber = build_fiber(
     fiber_model=FiberModel.MRG_DISCRETE,
-    length=5000,#micro m
-    diameter=10, # micrometer for rats?
+    length=2e4,#micro m
+    diameter=5.7, # micrometer for rats?
     temperature=37
 )
 
 
 #%% Waveform
 
-time_step=0.001
+time_step=0.05
 time_stop=100
 
 # Create cSCS with passive charge balance waveform
@@ -55,20 +55,20 @@ t_cp, waveform= conventional_passive(
 )
 
 
-# Plot 2: Conventional Passive Charge Balance
-fig2, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 12))
-ax1.plot(t_cp, waveform)
-ax1.set_title('Full')
-ax1.grid(True)
+# # Plot 2: Conventional Passive Charge Balance
+# fig2, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 12))
+# ax1.plot(t_cp, waveform)
+# ax1.set_title('Full')
+# ax1.grid(True)
 
-ax2.plot(t_cp, waveform)
-ax2.set_title('Zoomed')
-ax2.set_xlim(24, 28)
-ax2.grid(True)
+# ax2.plot(t_cp, waveform)
+# ax2.set_title('Zoomed')
+# ax2.set_xlim(24, 28)
+# ax2.grid(True)
 
-fig2.suptitle('Conventional Passive Charge Balance')
-plt.tight_layout()
-plt.show()
+# fig2.suptitle('Conventional Passive Charge Balance')
+# plt.tight_layout()
+# plt.show()
 
 #%% Create fiber potential
 
@@ -143,26 +143,26 @@ center_node = int(np.floor(0.5 * (1 + (len(fiber.sections) - 1) / 11)))
 
 sns.set(font_scale=1.5, style='whitegrid', palette='colorblind')
 
-plt.figure()
-plt.plot(
-    np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], label='end node', color='royalblue', linewidth=2
-)
-plt.plot(
-    np.array(stimulation.time)[:],
-    list(fiber.vm[center_node])[:],
-    label='center node',
-    color='mediumturquoise',
-    linewidth=2,
-)
-plt.legend()
-plt.xlabel('Time (ms)')
-plt.ylabel('$V_m$ $(mV)$')
-ax2 = plt.gca().twinx()
-ax2.plot(np.array(stimulation.time)[:-1], stimamp * waveform[:], 'k--', label='Stimulus')
-ax2.legend(loc=4)
-ax2.grid(False)
-plt.ylabel('Stimulation amplitude (mA)')
-plt.show()
+# plt.figure()
+# plt.plot(
+#     np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], label='end node', color='royalblue', linewidth=2
+# )
+# plt.plot(
+#     np.array(stimulation.time)[:],
+#     list(fiber.vm[center_node])[:],
+#     label='center node',
+#     color='mediumturquoise',
+#     linewidth=2,
+# )
+# plt.legend()
+# plt.xlabel('Time (ms)')
+# plt.ylabel('$V_m$ $(mV)$')
+# ax2 = plt.gca().twinx()
+# ax2.plot(np.array(stimulation.time)[:-1], stimamp * waveform[:], 'k--', label='Stimulus')
+# ax2.legend(loc=4)
+# ax2.grid(False)
+# plt.ylabel('Stimulation amplitude (mA)')
+# plt.show()
 
 
 
@@ -209,89 +209,89 @@ plt.show()
     
 #%% Plotting transmembrane currents    
 
-plt.figure()
-fig, axs = plt.subplots(3, 1, figsize=(5, 5), sharex=True, gridspec_kw={'hspace': 0.3})
-plt.sca(axs[0])
-# plot stimulus
-plt.plot(np.array(stimulation.time)[:-1], amp * waveform[:], 'k--', label='Stimulus')
-plt.title('Stimulus')
-plt.sca(axs[1])
-# plot membrane voltage
-plt.plot(
-    np.array(stimulation.time)[:],
-    list(fiber.vm[center_node])[:],
-    color='mediumturquoise',
-    linewidth=2,
-    label='$V_m$',
-)
-# plot im
-plt.plot(
-    np.array(stimulation.time)[:],
-    list(fiber.im[center_node])[:],
-    color='mediumturquoise',
-    linewidth=2,
-    label='$I_m$',
-    ls='--',
-)
-plt.title('Center node')
-plt.legend()
-plt.sca(axs[2])
-# plot end node
-plt.plot(
-    np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], color='royalblue', linewidth=2, label='$V_m$'
-)
-plt.plot(
-    np.array(stimulation.time)[:],
-    list(fiber.im[end_node])[:],
-    color='royalblue',
-    linewidth=2,
-    label='$I_m$',
-    ls='--',
-)
-plt.title('End node')
-plt.legend()
-axs[2].set_xlabel('Time (ms)')
-plt.show()
+# plt.figure()
+# fig, axs = plt.subplots(3, 1, figsize=(5, 5), sharex=True, gridspec_kw={'hspace': 0.3})
+# plt.sca(axs[0])
+# # plot stimulus
+# plt.plot(np.array(stimulation.time)[:-1], amp * waveform[:], 'k--', label='Stimulus')
+# plt.title('Stimulus')
+# plt.sca(axs[1])
+# # plot membrane voltage
+# plt.plot(
+#     np.array(stimulation.time)[:],
+#     list(fiber.vm[center_node])[:],
+#     color='mediumturquoise',
+#     linewidth=2,
+#     label='$V_m$',
+# )
+# # plot im
+# plt.plot(
+#     np.array(stimulation.time)[:],
+#     list(fiber.im[center_node])[:],
+#     color='mediumturquoise',
+#     linewidth=2,
+#     label='$I_m$',
+#     ls='--',
+# )
+# plt.title('Center node')
+# plt.legend()
+# plt.sca(axs[2])
+# # plot end node
+# plt.plot(
+#     np.array(stimulation.time)[:], list(fiber.vm[end_node])[:], color='royalblue', linewidth=2, label='$V_m$'
+# )
+# plt.plot(
+#     np.array(stimulation.time)[:],
+#     list(fiber.im[end_node])[:],
+#     color='royalblue',
+#     linewidth=2,
+#     label='$I_m$',
+#     ls='--',
+# )
+# plt.title('End node')
+# plt.legend()
+# axs[2].set_xlabel('Time (ms)')
+# plt.show()
 
-#%% Animation
-import os
-os.environ["IMAGEIO_FFMPEG_EXE"] = "/opt/homebrew/bin/ffmpeg"  # Replace with the actual path
-
-
-from moviepy.editor import VideoClip
-from moviepy.video.io.bindings import mplfig_to_npimage
-
-fps = 30
-skip = 100  # do every 10th timestep
-stop = 1000 / time_step  # stop after 2 milliseconds
-
-duration = stop / fps / skip  # milliseconds
-ylim = (np.amin(list(fiber.vm[1:-1]))), np.amax(list(fiber.vm[1:-1]))
-
-fig, ax = plt.subplots()
+# #%% Animation
+# import os
+# os.environ["IMAGEIO_FFMPEG_EXE"] = "/opt/homebrew/bin/ffmpeg"  # Replace with the actual path
 
 
-def make_frame(i):
-    """Create frame of video.
+# from moviepy.editor import VideoClip
+# from moviepy.video.io.bindings import mplfig_to_npimage
 
-    :param i: index of frame, given to function by moviepy
-    :returns: figure as image
-    """
-    ind = int(i * skip * fps)
-    ax.clear()
-    ax.set_ylim(ylim)
-    ax.plot([v[ind] for v in fiber.vm[1:-1]], lw=3)
-    plt.title(f'Time: {stimulation.time[ind]:0.1f} ms')
-    plt.ylabel('$V_m$')
-    plt.xlabel('Node index')
-    plt.tight_layout()
-    return mplfig_to_npimage(fig)
+# fps = 30
+# skip = 100  # do every 10th timestep
+# stop = 1000 / time_step  # stop after 2 milliseconds
+
+# duration = stop / fps / skip  # milliseconds
+# ylim = (np.amin(list(fiber.vm[1:-1]))), np.amax(list(fiber.vm[1:-1]))
+
+# fig, ax = plt.subplots()
 
 
-animation = VideoClip(make_frame, duration=duration)
-animation.write_videofile('ap.mp4', fps=fps)
-plt.close()
+# def make_frame(i):
+#     """Create frame of video.
 
-#%% Display animation
-os.system("open ap.mp4")
+#     :param i: index of frame, given to function by moviepy
+#     :returns: figure as image
+#     """
+#     ind = int(i * skip * fps)
+#     ax.clear()
+#     ax.set_ylim(ylim)
+#     ax.plot([v[ind] for v in fiber.vm[1:-1]], lw=3)
+#     plt.title(f'Time: {stimulation.time[ind]:0.1f} ms')
+#     plt.ylabel('$V_m$')
+#     plt.xlabel('Node index')
+#     plt.tight_layout()
+#     return mplfig_to_npimage(fig)
+
+
+# animation = VideoClip(make_frame, duration=duration)
+# animation.write_videofile('ap.mp4', fps=fps)
+# plt.close()
+
+# #%% Display animation
+# os.system("open ap.mp4")
 
