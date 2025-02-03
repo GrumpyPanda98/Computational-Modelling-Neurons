@@ -8,7 +8,7 @@ from openpyxl.styles import Alignment
 import seaborn as sns
 
 # Define the base directory
-base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/stim_multiplier_highstimstep"  # Adjust this if needed
+base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/stim_multiplierpw0.2dia4"  # Adjust this if needed
 
 # Define a color palette using seaborn
 palette = sns.color_palette("Set1", n_colors=3)  # 3 colors for Conventional, Fast, Burst
@@ -16,7 +16,7 @@ palette = sns.color_palette("Set1", n_colors=3)  # 3 colors for Conventional, Fa
 # Define step parameters for sub-sampling
 # Set step values to 1 to include all data points,
 # 2 to skip every other, 3 to skip every third, etc.
-action_potentials_step = 2  # Change this value as needed
+action_potentials_step = 1  # Change this value as needed
 last_ap_times_step = 2       # Change this value as needed
 
 # ============================
@@ -66,6 +66,8 @@ action_table = action_df.pivot_table(
     values="Threshold Value"
 )
 
+
+name=action_table
 # Rename the columns to the desired names (adjust if needed)
 action_table.columns = ["Burst", 
                         "Burst Passive", 
@@ -87,12 +89,12 @@ plt.figure(figsize=(8, 5))
 x_vals = action_table_subset.index * 100  # Adjust scaling if necessary
 
 plt.plot(x_vals, 100 * action_table_subset["Conventional"] / 8,          marker='s', label='Conventional', color=palette[0])
-plt.plot(x_vals, 100 * action_table_subset["Conventional Passive"] / 8, linestyle='--',  marker='o', label='Conventional Passive', color=palette[0])
+plt.plot(x_vals, 100 * action_table_subset["Conventional Passive"] / 8, linestyle='--',  marker='s', label='Conventional Passive', color=palette[0])
 
-plt.plot(x_vals, 100 * action_table_subset["Fast"] / 18,          marker='s', label='Fast', color=palette[1])
-plt.plot(x_vals, 100 * action_table_subset["Fast Passive"] / 18, linestyle='--',  marker='o', label='Fast Passive', color=palette[1])
+plt.plot(x_vals, 100 * action_table_subset["Fast"] / 18,          marker='^', label='Fast', color=palette[1])
+plt.plot(x_vals, 100 * action_table_subset["Fast Passive"] / 18, linestyle='--',  marker='^', label='Fast Passive', color=palette[1])
 
-plt.plot(x_vals, 100 * action_table_subset["Burst"] / 40,         marker='s', label='Burst', color=palette[2])
+plt.plot(x_vals, 100 * action_table_subset["Burst"] / 40,         marker='o', label='Burst', color=palette[2])
 plt.plot(x_vals, 100 * action_table_subset["Burst Passive"] / 40, linestyle='--',         marker='o', label='Burst Passive', color=palette[2])
 
 # Labeling and cosmetics

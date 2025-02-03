@@ -81,14 +81,22 @@ plt.figure(figsize=(8, 5))
 # Extract diameters as your x-axis
 x_vals = table.index
 
-plt.plot(x_vals, -table["Conventional"],          marker='s', label='Conventional', color=palette[0])
-plt.plot(x_vals, -table["Conventional Passive"], linestyle='--',  marker='o', label='Conventional Passive', color=palette[0])
+# Define your desired alpha value
+alpha_value = 1  # Adjust between 0 (transparent) and 1 (opaque)
 
-plt.plot(x_vals, -table["Fast"],          marker='s', label='Fast', color=palette[1])
-plt.plot(x_vals, -table["Fast Passive"], linestyle='--',  marker='o', label='Fast Passive', color=palette[1])
+plt.figure(figsize=(10, 6))
 
-plt.plot(x_vals, -table["Burst"],         marker='s', label='Burst', color=palette[2])
-plt.plot(x_vals, -table["Burst Passive"], linestyle='--',         marker='o', label='Burst Passive', color=palette[2])
+plt.plot(x_vals, -table["Conventional"],          marker='s', linestyle='-', label='Conventional', color=palette[0])
+plt.plot(x_vals, -table["Conventional Passive"], linestyle='--', marker='s', label='Conventional Passive', color=palette[0])
+
+plt.plot(x_vals, -table["Fast"],                marker='^', linestyle='-', label='Fast', color=palette[1])
+plt.plot(x_vals, -table["Fast Passive"],        linestyle='--', marker='^', label='Fast Passive', color=palette[1])
+
+plt.plot(x_vals, -table["Burst"],               marker='o', linestyle='-', label='Burst', color=palette[2])
+plt.plot(x_vals, -table["Burst Passive"],       linestyle='--', marker='o', label='Burst Passive', color=palette[2])
+
+# Continue with labeling, grid, legend, etc.
+
 
 # 4. Labeling and cosmetics
 plt.title('Activation Threshold vs. Diameter', fontsize=14)

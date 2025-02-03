@@ -6,15 +6,15 @@ import cairosvg  # For rendering SVG into matplotlib
 from io import BytesIO
 
 # Define base directory (Adjust this path)
-base_dir = "C:/Users/nicko/Documents/GitHub/Computational-Modelling-Neurons/pipelines/runs/stim_multiplier_highstimstep/1.40"
+base_dir = r"pipelines/runs/stim_multiplierpw0.2dia4/1.50"
 
 # List of heatmap files (Extracted from provided image structure)
 heatmap_files = [
-    "Burst_Abott_Wave/Burst_Abott_Wave_voltage_heatmap.svg",
-    "Burst_Wave/Burst_Wave_voltage_heatmap.svg",
-    "Conventional_Biphasic_Waveform/Conventional_Biphasic_Waveform_voltage_heatmap.svg",
+    "Burst_Passive_Charge_Balance/Burst_Passive_Charge_Balance_voltage_heatmap.svg",
+    "Burst_Active_Charge_Balance/Burst_Active_Charge_Balance_voltage_heatmap.svg",
+    "Conventional_Active_Charge_Balance/Conventional_Active_Charge_Balance_voltage_heatmap.svg",
     "Conventional_Passive_Charge_Balance/Conventional_Passive_Charge_Balance_voltage_heatmap.svg",
-    "Fast_Biphasic_Waveform/Fast_Biphasic_Waveform_voltage_heatmap.svg",
+    "Fast_Active_Charge_Balance/Fast_Active_Charge_Balance_voltage_heatmap.svg",
     "Fast_Passive_Charge_Balance/Fast_Passive_Charge_Balance_voltage_heatmap.svg"
 ]
 
