@@ -1,4 +1,4 @@
-# Tonic and Burst Stimulation in Neural Fibres
+# Neural Responses to Tonic and Burst Stimulation
 
 Research code and selected figures from a computational study of spinal cord stimulation, carried out at Aalborg University and the Grill Lab at Duke University. The study examined how waveform shape and charge balancing affect axonal activation and the fidelity of short-term responses.
 
@@ -18,7 +18,7 @@ How do tonic and burst stimulation recruit modelled fibres, and how reliably doe
 
 The study used a modified McIntyre–Richardson–Grill axon model through PyFibers. Simulations compared conventional, FAST, and burst waveforms, active and passive charge balancing, different fibre diameters, and two pulse-width settings (0.2 and 1 ms).
 
-![Comparison of conventional, FAST, and burst waveforms with active and passive charge balancing](docs/figures/waveforms.png)
+![Comparison of conventional, FAST, and burst waveforms with active and passive charge balancing](docs/figures/waveforms-dark.png)
 
 *Waveform illustration retained from the project. Amplitudes are normalised; this panel shows the stimulation shapes rather than activation thresholds.*
 
@@ -32,9 +32,9 @@ The [published abstract](https://pubmed.ncbi.nlm.nih.gov/41336112/) reports:
 
 These modelling results suggest that differences in firing regularity may help explain reduced paraesthesia with burst stimulation. They provide a proposed mechanism; clinical effects were not measured in these simulations.
 
-![Fidelity as a function of stimulation amplitude for conventional, FAST, and burst waveforms](docs/figures/fidelity.png)
+![Fidelity as a function of stimulation amplitude for conventional, FAST, and burst waveforms](docs/figures/fidelity-dark.png)
 
-*Saved amplitude-sweep output for a 4 µm fibre over a 200 ms simulation window. The source counts, simulation parameters, and figure provenance are in [docs/figures](docs/figures/). These are retained project outputs, not newly recomputed results.*
+*Saved amplitude-sweep output for a 4 µm fibre over a 200 ms simulation window. The source counts, simulation parameters, and figure provenance are in [docs/figures](docs/figures/). These are retained project outputs with colours adapted for a dark background; the original SVGs are preserved.*
 
 ## Code and supporting material
 
