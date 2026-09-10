@@ -7,7 +7,6 @@ Created on Wed Oct  9 10:03:46 2024
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 
@@ -115,32 +114,6 @@ def burst(frequency, burst_frequency, pulse_width, interphase_interval, time_sto
         waveform[i:i + burst_points] = burst_pulse[:len(waveform[i:i + burst_points])]
     
     return t, waveform
-
-t_b, burst_wave = burst(
-    frequency=40,          # Carrier frequency of the waveform
-    burst_frequency=500,   # Frequency of the bursts
-    pulse_width=1,      # Width of each pulse
-    interphase_interval=0, # Interval between pulses
-    time_stop=100,         # Total time for the waveform'
-    time_step= 0.0001
-)
-
-# # Plot 5: Burst "Biphasic Waveform"
-# fig5, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
-# ax1.plot(t_b, burst_wave)
-# ax1.set_title('Burst "Biphasic Waveform" (Full)')
-# ax1.set_xlim(0, 100)
-# ax1.grid(True)
-
-# ax2.plot(t_b, burst_wave)
-# ax2.set_title('Burst "Biphasic Waveform" (Zoomed)')
-# ax2.set_xlim(25, 37)
-# ax2.grid(True)
-
-# fig5.suptitle('Burst "Biphasic Waveform"')
-# plt.tight_layout()
-# plt.show()
-
 
 def burst_abott_linear(
     frequency,

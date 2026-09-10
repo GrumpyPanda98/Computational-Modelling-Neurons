@@ -12,3 +12,15 @@
 *.h5
 *.xlsx
 *.bak
+
+# Local inputs and generated outputs
+.DS_Store
+outputs/
+runs/
+data/
+*.fif
+*.mat
+*.tsq
+*.tev
+*.h5
+*.hdf5
