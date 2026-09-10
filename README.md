@@ -1,45 +1,59 @@
-# Neural Fibre Models for Electrical Stimulation
+# Tonic and Burst Stimulation in Neural Fibres
 
-Python experiments exploring how stimulation waveforms affect modelled nerve-fibre responses. The scripts compare conventional, FAST-labelled, and burst configurations, including active and passive charge-balancing approaches.
+Research code and selected figures from a computational study of spinal cord stimulation, carried out at Aalborg University and the Grill Lab at Duke University. The study examined how waveform shape and charge balancing affect axonal activation and the fidelity of short-term responses.
 
-This is research code from my work on computational modelling of spinal cord stimulation. It contains waveform generators, activation-threshold sweeps, and plotting utilities. It is not a clinical prediction tool or a packaged reproduction of a published result.
+**Completed research project.** The repository preserves the simulation and analysis work associated with the paper.
 
-## Start with the waveforms
+## Publication
 
-Python 3.11 is the verification baseline. From the repository root:
+**Exploring Tonic and Burst Stimulation in Neural Fibers: A Computational Modeling Approach**
+
+Nickolaj Ajay Atchuthan, Warren M. Grill, and Suzan Meijs. IEEE EMBC, 2025, pp. 1–6.
+
+[Published paper](https://doi.org/10.1109/EMBC58623.2025.11253067) · [PubMed abstract](https://pubmed.ncbi.nlm.nih.gov/41336112/)
+
+## Research question and approach
+
+How do tonic and burst stimulation recruit modelled fibres, and how reliably does each stimulus produce a propagating action potential?
+
+The study used a modified McIntyre–Richardson–Grill axon model through PyFibers. Simulations compared conventional, FAST, and burst waveforms, active and passive charge balancing, different fibre diameters, and two pulse-width settings (0.2 and 1 ms).
+
+![Comparison of conventional, FAST, and burst waveforms with active and passive charge balancing](docs/figures/waveforms.png)
+
+*Waveform illustration retained from the project. Amplitudes are normalised; this panel shows the stimulation shapes rather than activation thresholds.*
+
+## Main findings
+
+The [published abstract](https://pubmed.ncbi.nlm.nih.gov/41336112/) reports:
+
+- Burst waveforms had lower activation thresholds than conventional and FAST stimulation, particularly for smaller fibres.
+- Burst responses reached approximately **43–53% fidelity at 150% of activation threshold**. Conventional and FAST responses reached **100% fidelity at 116% and 124% of threshold**, respectively.
+- Burst stimulation produced irregular intraburst firing and both uni- and bidirectional propagation, while conventional and FAST responses were more consistently pulse-locked.
+
+These modelling results suggest that differences in firing regularity may help explain reduced paraesthesia with burst stimulation. They provide a proposed mechanism; clinical effects were not measured in these simulations.
+
+![Fidelity as a function of stimulation amplitude for conventional, FAST, and burst waveforms](docs/figures/fidelity.png)
+
+*Saved amplitude-sweep output for a 4 µm fibre over a 200 ms simulation window. The source counts, simulation parameters, and figure provenance are in [docs/figures](docs/figures/). These are retained project outputs, not newly recomputed results.*
+
+## Code and supporting material
+
+| Path | Contents |
+| --- | --- |
+| `functions/waveforms.py` | Waveform definitions used in the experiments |
+| `pipelines/` | Fibre simulations, threshold searches, and plotting scripts |
+| `pipelines/tables/` | Historical threshold exports |
+| `prototyping/` | Exploratory work retained for context |
+| `docs/figures/` | Selected figures with source data and provenance |
+
+The scripts reflect the research environment in which they were written. Full simulations require the original compatible PyFibers/NEURON mechanisms, whose exact versions are not pinned here. Historical scripts also contain local paths and run-specific parameters. The publication is the reference for the study methods and conclusions.
+
+A small waveform preview and synthetic checks are available independently of the fibre simulator:
 
 ```sh
-python -m venv .venv
-# Windows PowerShell: .venv\Scripts\Activate.ps1
-# macOS/Linux: source .venv/bin/activate
 python -m pip install -r requirements.txt
 python -m examples.waveform_preview --output outputs/waveforms.png
 python -m unittest discover -s tests -v
 ```
 
-The preview generates a small waveform figure without starting a fibre simulation. Time and pulse-width inputs are in milliseconds; frequencies are in hertz. Amplitudes are normalised waveform values, with stimulation amplitude applied by the simulation scripts.
-
-## What is here
-
-| Path | Purpose |
-| --- | --- |
-| `functions/waveforms.py` | Conventional, passive-recharge, and burst waveform generators |
-| `examples/waveform_preview.py` | Small, configurable waveform preview |
-| `pipelines/` | Single-process and parallel fibre simulations, threshold searches, and analysis |
-| `pipelines/functions/pipeline_functions.py` | Simulation plotting and export helpers |
-| `pipelines/tables/` | Historical threshold exports; provenance needs documenting before scientific reuse |
-| `prototyping/` | Exploratory scripts retained for context |
-
-## Fibre simulations
-
-The simulation scripts additionally require the `pyfibers` API providing `build_fiber`, `FiberModel`, and `ScaledStim`, with its compatible NEURON mechanisms. That dependency and its exact version are not bundled or pinned here. Installing the preview requirements alone does **not** make the simulations runnable.
-
-Review the parameters in a pipeline before executing it. Some scripts launch parallel sweeps, generate many files, or assume an existing output directory. Run modules from the repository root so the shared `functions` imports resolve. The preview and unit checks do not validate activation thresholds or reproduce the historical tables.
-
-Several waveform variants are exploratory. In particular, `conventional` currently appends its gap after both phases, while other generators place a gap between phases; `burst` does not independently schedule its intraburst spacing. These conventions are preserved pending comparison with the original protocol, rather than silently changed during cleanup.
-
-## Development
-
-See [the milestones](ROADMAP.md) for dependency provenance, waveform validation, and a reproducible simulation entry point. Small fixes and clearer examples are welcome; changes to waveform definitions or model parameters need a documented comparison with the existing behaviour.
-
-[Nickolaj Ajay Atchuthan](https://atchuthan.com/)
+These checks cover software behaviour, not reproduction of the paper's results. The waveform conventions have been preserved, including historical differences in gap placement and burst timing between generators.

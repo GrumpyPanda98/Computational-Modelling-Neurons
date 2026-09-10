@@ -1,0 +1,661 @@
+{
+  "source_directory": "pipelines/runs/stim_multiplierpw0.2dia4",
+  "expected_pulse_counts": {
+    "Conventional": 8,
+    "Fast": 18,
+    "Burst": 40
+  },
+  "calculation": "fidelity_percent = 100 * action_potentials / expected_pulse_count",
+  "records": [
+    {
+      "amplitude_multiplier": 1.0,
+      "action_potentials": {
+        "Fast Active Charge Balance": 1.0,
+        "Conventional Active Charge Balance": 1.0,
+        "Conventional Passive Charge Balance": 1.0,
+        "Fast Passive Charge Balance": 1.0,
+        "Burst Active Charge Balance": 1.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.0,
+        "conductivity": 0.15,
+        "Duration": "80.90145897865295 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.02,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 2.0,
+        "Fast Active Charge Balance": 1.0,
+        "Fast Passive Charge Balance": 1.0,
+        "Conventional Passive Charge Balance": 2.0,
+        "Burst Active Charge Balance": 2.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.02,
+        "conductivity": 0.15,
+        "Duration": "81.55615425109863 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.04,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 3.0,
+        "Fast Active Charge Balance": 3.0,
+        "Fast Passive Charge Balance": 1.0,
+        "Conventional Passive Charge Balance": 3.0,
+        "Burst Active Charge Balance": 2.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.04,
+        "conductivity": 0.15,
+        "Duration": "80.09529161453247 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.06,
+      "action_potentials": {
+        "Fast Active Charge Balance": 4.0,
+        "Conventional Active Charge Balance": 4.0,
+        "Fast Passive Charge Balance": 4.0,
+        "Conventional Passive Charge Balance": 4.0,
+        "Burst Active Charge Balance": 2.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.06,
+        "conductivity": 0.15,
+        "Duration": "84.48888063430786 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.08,
+      "action_potentials": {
+        "Fast Active Charge Balance": 5.0,
+        "Fast Passive Charge Balance": 4.0,
+        "Conventional Active Charge Balance": 5.0,
+        "Conventional Passive Charge Balance": 4.0,
+        "Burst Active Charge Balance": 3.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.08,
+        "conductivity": 0.15,
+        "Duration": "84.73307251930237 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.1,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 5.0,
+        "Fast Active Charge Balance": 6.0,
+        "Conventional Passive Charge Balance": 5.0,
+        "Fast Passive Charge Balance": 6.0,
+        "Burst Active Charge Balance": 4.0,
+        "Burst Passive Charge Balance": 1.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.1,
+        "conductivity": 0.15,
+        "Duration": "85.64096760749817 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.12,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 6.0,
+        "Fast Active Charge Balance": 7.0,
+        "Conventional Passive Charge Balance": 6.0,
+        "Fast Passive Charge Balance": 6.0,
+        "Burst Active Charge Balance": 5.0,
+        "Burst Passive Charge Balance": 3.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.12,
+        "conductivity": 0.15,
+        "Duration": "76.50265145301819 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.14,
+      "action_potentials": {
+        "Fast Active Charge Balance": 8.0,
+        "Conventional Active Charge Balance": 7.0,
+        "Fast Passive Charge Balance": 7.0,
+        "Conventional Passive Charge Balance": 7.0,
+        "Burst Active Charge Balance": 7.0,
+        "Burst Passive Charge Balance": 3.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.1400000000000001,
+        "conductivity": 0.15,
+        "Duration": "80.17838907241821 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.16,
+      "action_potentials": {
+        "Fast Active Charge Balance": 10.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 9.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 8.0,
+        "Burst Passive Charge Balance": 4.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.1600000000000001,
+        "conductivity": 0.15,
+        "Duration": "77.25364232063293 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.18,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 12.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 10.0,
+        "Burst Active Charge Balance": 9.0,
+        "Burst Passive Charge Balance": 4.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.18,
+        "conductivity": 0.15,
+        "Duration": "79.00903749465942 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.2,
+      "action_potentials": {
+        "Fast Passive Charge Balance": 12.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 14.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 9.0,
+        "Burst Passive Charge Balance": 4.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.2,
+        "conductivity": 0.15,
+        "Duration": "21.16256356239319 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.22,
+      "action_potentials": {
+        "Burst Active Charge Balance": 9.0,
+        "Fast Active Charge Balance": 16.0,
+        "Fast Passive Charge Balance": 15.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Passive Charge Balance": 4.0,
+        "Conventional Active Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.22,
+        "conductivity": 0.15,
+        "Duration": "21.17812705039978 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.24,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Burst Passive Charge Balance": 4.0,
+        "Fast Passive Charge Balance": 17.0,
+        "Burst Active Charge Balance": 10.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.24,
+        "conductivity": 0.15,
+        "Duration": "21.112993955612183 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.26,
+      "action_potentials": {
+        "Fast Passive Charge Balance": 18.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 12.0,
+        "Burst Passive Charge Balance": 5.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.26,
+        "conductivity": 0.15,
+        "Duration": "21.14147138595581 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.28,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Passive Charge Balance": 6.0,
+        "Burst Active Charge Balance": 10.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Fast Active Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.28,
+        "conductivity": 0.15,
+        "Duration": "21.00836753845215 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.3,
+      "action_potentials": {
+        "Fast Active Charge Balance": 18.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Burst Passive Charge Balance": 7.0,
+        "Burst Active Charge Balance": 13.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Conventional Passive Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.3,
+        "conductivity": 0.15,
+        "Duration": "20.977161645889282 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.32,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 12.0,
+        "Fast Passive Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.32,
+        "conductivity": 0.15,
+        "Duration": "21.130561351776123 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.34,
+      "action_potentials": {
+        "Burst Active Charge Balance": 12.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.34,
+        "conductivity": 0.15,
+        "Duration": "21.272865772247314 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.36,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 8.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Burst Active Charge Balance": 14.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.36,
+        "conductivity": 0.15,
+        "Duration": "21.19288182258606 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.38,
+      "action_potentials": {
+        "Fast Active Charge Balance": 18.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Burst Active Charge Balance": 12.0,
+        "Burst Passive Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.3800000000000001,
+        "conductivity": 0.15,
+        "Duration": "21.827980995178223 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.4,
+      "action_potentials": {
+        "Fast Active Charge Balance": 18.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 12.0,
+        "Burst Passive Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.4000000000000001,
+        "conductivity": 0.15,
+        "Duration": "21.710105895996094 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.42,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 8.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Burst Active Charge Balance": 12.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.4200000000000002,
+        "conductivity": 0.15,
+        "Duration": "21.865618467330933 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.44,
+      "action_potentials": {
+        "Fast Active Charge Balance": 18.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 12.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Burst Active Charge Balance": 12.0,
+        "Conventional Passive Charge Balance": 8.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.4400000000000002,
+        "conductivity": 0.15,
+        "Duration": "21.706318616867065 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.46,
+      "action_potentials": {
+        "Burst Passive Charge Balance": 12.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 15.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Fast Passive Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.4600000000000002,
+        "conductivity": 0.15,
+        "Duration": "21.6416597366333 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.48,
+      "action_potentials": {
+        "Conventional Active Charge Balance": 8.0,
+        "Conventional Passive Charge Balance": 8.0,
+        "Burst Active Charge Balance": 18.0,
+        "Burst Passive Charge Balance": 14.0,
+        "Fast Passive Charge Balance": 18.0,
+        "Fast Active Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.4800000000000002,
+        "conductivity": 0.15,
+        "Duration": "21.83191704750061 s"
+      }
+    },
+    {
+      "amplitude_multiplier": 1.5,
+      "action_potentials": {
+        "Conventional Passive Charge Balance": 8.0,
+        "Conventional Active Charge Balance": 8.0,
+        "Fast Active Charge Balance": 18.0,
+        "Burst Active Charge Balance": 21.0,
+        "Burst Passive Charge Balance": 17.0,
+        "Fast Passive Charge Balance": 18.0
+      },
+      "simulation_parameters": {
+        "time_step": 0.05,
+        "time_stop": 200,
+        "pre_stim": 10,
+        "length": 100000.0,
+        "diameter": 4,
+        "temperature": 37,
+        "fiber_model": "FiberModel.SMALL_MRG_INTERPOLATION",
+        "exit_t_shift": 10,
+        "thresh_num_aps": 1,
+        "stim_multiplier": 1.5000000000000002,
+        "conductivity": 0.15,
+        "Duration": "21.798376083374023 s"
+      }
+    }
+  ]
+}

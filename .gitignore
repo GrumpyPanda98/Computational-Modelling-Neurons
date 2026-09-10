@@ -24,3 +24,8 @@ data/
 *.tev
 *.h5
 *.hdf5
+
+# Selected figures and source data retained with the publication
+!docs/figures/*.png
+!docs/figures/*.svg
+!docs/figures/*.json

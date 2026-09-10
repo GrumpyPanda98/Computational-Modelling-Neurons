@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve original simulation figures byte for byte, including SVG path spacing.
+docs/figures/*.svg -text -whitespace linguist-generated=true

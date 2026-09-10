@@ -1,0 +1,12 @@
+{
+  "waveforms": {
+    "source_path": "pipelines/waveform_plots.svg",
+    "sha256": "7739b5df6282a5ab2878a83cc833250bc1bff133cda114de404245321d86d2c3",
+    "rendering": "PNG rendered from the unmodified source SVG with MuPDF; no simulation rerun."
+  },
+  "fidelity": {
+    "source_path": "pipelines/runs/stim_multiplierpw0.2dia4/ap.svg",
+    "sha256": "7e243637df77c7c96d1f58974ae4b5fcf14d1054cf2c67facf428086934c89eb",
+    "rendering": "PNG rendered from the unmodified source SVG with MuPDF; no simulation rerun."
+  }
+}
