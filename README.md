@@ -10,7 +10,7 @@ Research code and selected figures from a computational study of spinal cord sti
 
 Nickolaj Ajay Atchuthan, Warren M. Grill, and Suzan Meijs. IEEE EMBC, 2025, pp. 1–6.
 
-[Published paper](https://doi.org/10.1109/EMBC58623.2025.11253067) · [PubMed abstract](https://pubmed.ncbi.nlm.nih.gov/41336112/)
+[Read the paper on IEEE Xplore](https://ieeexplore.ieee.org/abstract/document/11253067) · [DOI](https://doi.org/10.1109/EMBC58623.2025.11253067)
 
 ## Research question and approach
 
@@ -24,7 +24,7 @@ The study used a modified McIntyre–Richardson–Grill axon model through PyFib
 
 ## Main findings
 
-The [published abstract](https://pubmed.ncbi.nlm.nih.gov/41336112/) reports:
+The [paper](https://ieeexplore.ieee.org/abstract/document/11253067) reports:
 
 - Burst waveforms had lower activation thresholds than conventional and FAST stimulation, particularly for smaller fibres.
 - Burst responses reached approximately **43–53% fidelity at 150% of activation threshold**. Conventional and FAST responses reached **100% fidelity at 116% and 124% of threshold**, respectively.
